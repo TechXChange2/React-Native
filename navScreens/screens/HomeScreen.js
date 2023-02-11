@@ -1,13 +1,24 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from '@react-navigation/native';
+import * as API from '../API.js';
 
 //Screens
 
 export default function ProfileScreen({ navigation }) {
+  const [user, setUser] = React.useState('');
+
+  React.useEffect(() => {
+    //get user id 1, set user
+
+  }, [])
+
+
+
   return (
     <View style={styles.container}>
-      <Text>Profile (profile pic, items, pending trades, bookmarked items)</Text>
+      <Text>User Name is: {user.username}</Text>
       <Link to={{ screen: 'Settings', params: { id: '47' } }}>
       Go to Settings
       </Link>
