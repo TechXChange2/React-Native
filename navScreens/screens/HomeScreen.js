@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from '@react-navigation/native';
 
+//Screens
+
 export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
@@ -10,10 +12,26 @@ export default function ProfileScreen({ navigation }) {
       Go to Settings
       </Link>
       <Button
-        title="Go to Search"
-        onPress={() => navigation.navigate('Search', {
-          id: 50
+        title="Add Item"
+        onPress={() => navigation.navigate('AddItem', {
+          itemId: 12
         })}
+      />
+      <Button
+        title="LOGOUT"
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'LoginScreen' }],
+          })
+        }
+      />
+      <Button
+        title="View Item Details"
+        onPress={() => navigation.navigate('ItemDetails', {
+          itemId: 21
+        })
+        }
       />
       <StatusBar style="auto" />
     </View>

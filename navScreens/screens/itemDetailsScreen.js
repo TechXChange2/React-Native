@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ItemDetailsScreen() {
+export default function ItemDetailsScreen({route}) {
+  const itemId = route.params.itemId;
   return (
     <View style={styles.container}>
-      <Text>Item Details</Text>
+      <Text>Item Details with id of {itemId}</Text>
       <StatusBar style="auto" />
     </View>
   );

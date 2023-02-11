@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Screens
@@ -9,13 +10,12 @@ import HomeScreen from './screens/HomeScreen.js';
 import SearchScreen from './screens/SearchScreen.js';
 import SettingsScreen from './screens/SettingsScreen.js';
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function MainNav() {
-
+export default function HomeTabs() {
 
   return (
-    <NavigationContainer>
       <Tab.Navigator
       initialRouteName='Home'
       screenOptions={({route}) => {
@@ -47,8 +47,18 @@ export default function MainNav() {
         <Tab.Screen name={'Search'} component={SearchScreen} />
         <Tab.Screen name={'Settings'} component={SettingsScreen} />
 
+        {/* <Tab.Screen
+        name="Feed"
+        component={Feed}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      /> */}
+
       </Tab.Navigator>
-    </NavigationContainer>
   );
 }
 
