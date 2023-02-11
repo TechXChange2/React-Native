@@ -1,14 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import MainNav from './navScreens/MainNav.js';
 
-export default function App() {
+export default function SearchScreen({route}) {
+
+  const params = route.params;
+  console.log('These are params in Search', params);
+
   return (
-      <MainNav />
+    <View style={styles.container}>
+      <Text>Search</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
-
-//  {/* <StatusBar style="auto" /> */}
 
 const styles = StyleSheet.create({
   container: {

@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import MainNav from './navScreens/MainNav.js';
 
-export default function App() {
+export default function RegisterScreen() {
   return (
-      <MainNav />
+    <View style={styles.container}>
+      <Text>Register</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
-
-//  {/* <StatusBar style="auto" /> */}
 
 const styles = StyleSheet.create({
   container: {
