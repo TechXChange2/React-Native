@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function SettingsScreen({route}) {
 
   const params = route.params;
-  console.log('These are params in Settings', params);
 
   return (
     <View style={styles.container}>

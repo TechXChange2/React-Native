@@ -9,7 +9,7 @@ import axios from 'axios';
 //Screens
 
 export default function ProfileScreen(props) {
-  const myContext = useContext(Context);
+  const {logout, userToken} = React.useContext(Context);
 
   function getUser() {
     API.getUserFromID(1)
@@ -21,24 +21,14 @@ export default function ProfileScreen(props) {
     })
 
   }
-    //get user id 1, set user
-  function setNewUser() {
-    const newUser = myContext.user === 'Anon' ? 'Bob' : 'Anon';
-    myContext.setUser(newUser);
-  }
-
 
 
   return (
     <View style={styles.container}>
-      <Text>User Name is {myContext.user} </Text>
+      <Text>User Token is {userToken} </Text>
       <Link to={{ screen: 'Settings', params: { id: '47' } }}>
       Go to Settings
       </Link>
-      <Button
-        title="Toggle User"
-        onPress={setNewUser}
-      />
       <Button
         title="Add Item"
         onPress={() => props.navigation.navigate('AddItem', {
@@ -47,11 +37,13 @@ export default function ProfileScreen(props) {
       />
       <Button
         title="LOGOUT"
-        onPress={() =>
-          props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'LoginScreen' }],
-          })
+        onPress={() => {
+            logout();
+            // props.navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: 'LoginScreen' }],
+            // })
+          }
         }
       />
       <Button
