@@ -9,23 +9,13 @@ import axios from 'axios';
 //Screens
 
 export default function ProfileScreen(props) {
-  const {logout, userToken} = React.useContext(Context);
-
-  function getUser() {
-    API.getUserFromID(1)
-    .then(response => {
-      // console.log('User from 1', response.data); //WORKING
-    })
-    .catch(err => {
-      console.error(err);
-    })
-
-  }
+  const {logout, userToken, userData} = React.useContext(Context);
 
 
   return (
     <View style={styles.container}>
       <Text>User Token is {userToken} </Text>
+      <Text>User Name is {userData.name} </Text>
       <Link to={{ screen: 'Settings', params: { id: '47' } }}>
       Go to Settings
       </Link>
