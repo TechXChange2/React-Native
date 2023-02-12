@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import {Context} from '../../globals/context.js';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from '@react-navigation/native';
@@ -7,52 +8,47 @@ import axios from 'axios';
 
 //Screens
 
-export default function ProfileScreen({ navigation }) {
-  const [user, setUser] = React.useState('');
+export default function ProfileScreen(props) {
+  const myContext = useContext(Context);
 
   function getUser() {
-    console.log('GettingUserFunc called');
-    axios({method: 'GET', url: 'http://localhost:8080/users/user/1'})
-    .then(res => {
-      console.log('response', res.data);
+    API.getUserFromID(1)
+    .then(response => {
+      // console.log('User from 1', response.data); //WORKING
     })
     .catch(err => {
-      console.error('error in axios', err);
+      console.error(err);
     })
-    // API.getUserFromID(1)
-    // .then(response => {
-    //   console.log('User from 1', response.data);
-    // })
-    // .catch(err => {
-    //   console.error(err);
-    // })
 
   }
     //get user id 1, set user
-
+  function setNewUser() {
+    const newUser = myContext.user === 'Anon' ? 'Bob' : 'Anon';
+    myContext.setUser(newUser);
+  }
 
 
 
   return (
     <View style={styles.container}>
-      <Text>User Name is: {user.username}</Text>
+      <Text>User Name is {myContext.user} </Text>
       <Link to={{ screen: 'Settings', params: { id: '47' } }}>
       Go to Settings
       </Link>
       <Button
-        title="Get User 1"
-        onPress={getUser}
+        title="Toggle User"
+        onPress={setNewUser}
       />
       <Button
         title="Add Item"
-        onPress={() => navigation.navigate('AddItem', {
+        onPress={() => props.navigation.navigate('AddItem', {
           itemId: 12
         })}
       />
       <Button
         title="LOGOUT"
         onPress={() =>
-          navigation.reset({
+          props.navigation.reset({
             index: 0,
             routes: [{ name: 'LoginScreen' }],
           })
@@ -60,7 +56,7 @@ export default function ProfileScreen({ navigation }) {
       />
       <Button
         title="View Item Details"
-        onPress={() => navigation.navigate('ItemDetails', {
+        onPress={() => props.navigation.navigate('ItemDetails', {
           itemId: 21
         })
         }

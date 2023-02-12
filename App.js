@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+//React Context
+import {Provider, Context} from './globals/context.js';
 //Screens
 import HomeTabs from './navScreens/TABNAV.js';
 import AddItemScreen from './navScreens/modals/AddItemScreen.js';
@@ -15,6 +17,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
 
   return (
+    <Provider>
     <NavigationContainer>
       <Stack.Navigator
       screenOptions={{
@@ -34,6 +37,7 @@ export default function App() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{title: 'Login'}} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 

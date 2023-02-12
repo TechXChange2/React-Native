@@ -2,8 +2,7 @@ import axios from 'axios';
 //all functions are promises, so "THEN-able"
 
  function axiosCall(method, endpoint, data) {
-  console.log('getting endpoint', endpoint);
-  const url = `http://localhost:8080${endpoint}`;
+  const url = `http://192.168.1.8:8080${endpoint}`;
   return new Promise((resolve, reject) => {
     axios({method, url, data })
     .then(res => {
