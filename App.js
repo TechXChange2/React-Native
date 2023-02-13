@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { Provider as PaperProvider } from 'react-native-paper';
 //React Context
 import {ContextProvider, Context} from './globals/context.js';
 //Screens
@@ -10,16 +11,18 @@ import AppPage from './navScreens/AppPage.js';
 export default function App() {
   return (
     <ContextProvider>
-      <Root />
+      <PaperProvider>
+        <Root />
+      </PaperProvider>
     </ContextProvider>
   );
 }
 
-function Root() {
-  const {userToken} = React.useContext(Context);
+function Root() { //renders Authentication stack or App stack, depending on global login state
+  const {userEmail} = React.useContext(Context);
   return (
     <>
-      {userToken === 'null' ? <AuthPage /> : <AppPage />}
+      {userEmail.length? <AppPage /> : <AuthPage />}
     </>
   )
 }

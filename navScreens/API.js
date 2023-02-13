@@ -78,9 +78,9 @@ export function insertDevice(userID, dataObj) {
   })//end Promise
 }
 
-export function getUserFromID(userID) {
+export function getUserFromEmail(userEmail) {
   return new Promise((resolve,reject) => {
-    axiosCall('get', `/users/user/${userID}`)
+    axiosCall('get', `/users/user?email=${userEmail}`)
     .then(res => {
       resolve(res);
     })

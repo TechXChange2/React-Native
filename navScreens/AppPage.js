@@ -22,11 +22,6 @@ const Tab = createBottomTabNavigator();
 
 
 export default function AppPage() {
-  const {isLoading, getSetUserData} = React.useContext(Context);
-
-  React.useEffect(() => {
-    getSetUserData();
-  }, []);
 
   return (
     <NavigationContainer>

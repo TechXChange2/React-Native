@@ -1,46 +1,61 @@
 import React from 'react';
 import * as API from '../navScreens/API';
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase.js";
+import { signOut } from "firebase/auth";
+
 
 const Context = React.createContext();
 
 const ContextProvider = ({children}) => {
-  const [userId, setUserId] = React.useState(undefined);
+  const [userEmail, setUserEmail] = React.useState('');
   const [userData, setUserData] = React.useState({});
   const [userToken, setUserToken] = React.useState('null');
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const login = () => {
-    console.log('logging in...');
-    setUserToken('abscnsdj');
-    setIsLoading(false);
-  };
-  const logout = () => {
-    console.log('logging out...');
-    setUserToken('null');
-    setIsLoading(false);
-  };
+  React.useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('auth state changed.....');
+      if(user) {
+        console.log('loggin in...')
+        setUserEmail(user.email);
+        getSetUserData(user.email);
+      } else {
+        console.log('logging out...')
+        setUserEmail('');
+        setUserData({});
+      }
+    })
+    return () => {unsubscribe()}
+  }, [])
 
-  const getSetUserData = () => {
-    console.log('getSetUserData CALLED..');
-    const userIdTemp = !userId ? 2 : userId;
-    API.getUserFromID(userIdTemp)
+  const getSetUserData = (email) => {
+    API.getUserFromEmail(email)
     .then(res => {
-      // console.log('context user\n', response.data[0]);
+      // console.log('context user res\n', res.data);
       setUserData(res.data[0]);
     })
     .catch(err => {
-      console.log('error in globals context', err);
+      console.log('error in getSetUserData', err);
+    })
+  }
+
+  const handleSignOut = () => {
+    signOut(auth)
+    .then(() => {
+      // console.log('Success Reg (for json): ', JSON.stringify(userCredentials));
+      console.log('Success Sign Out');
+    })
+    .catch(err => {
+      console.log('Error sign out', JSON.stringify(err));
     })
   }
 
   return (
     <Context.Provider value={{
-      userToken,
+      userEmail,
       userData,
-      setUserData,
-      getSetUserData,
-      login,
-      logout
+      handleSignOut
       }}>
       {children}
     </Context.Provider>

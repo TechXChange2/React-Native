@@ -46,11 +46,10 @@ module.exports = {
     }
   },
   getUser: async (req, res) => {
-    const userID = req.params.id;
-    // const { params: { id } } = req;
-    console.log('GETTING USER with id of', userID);
+    const userEmail = req.query.email;
+    console.log('GETTING USER with email of', userEmail);
 
-    const qString = `SELECT * FROM users WHERE id = ${userID};`;
+    const qString = `SELECT * FROM users WHERE email = '${userEmail}';`;
 
     db.query(qString, function (err, results) {
       if (err) {

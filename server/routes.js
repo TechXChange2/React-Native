@@ -8,7 +8,7 @@ const {
   Map,
 } = require('./controllers');
 
-router.get('/users/user/:id', Users.getUser);
+router.get('/users/user', Users.getUser);
 router.post('/users', Users.createUser);
 router.get('/users/all', Users.getAllUsers);
 router.post('/users/auth', Users.authUser);

@@ -9,12 +9,12 @@ import axios from 'axios';
 //Screens
 
 export default function ProfileScreen(props) {
-  const {logout, userToken, userData} = React.useContext(Context);
-
+  const {userData, handleSignOut} = React.useContext(Context);
+  console.log('User Data Home', userData);
 
   return (
     <View style={styles.container}>
-      <Text>User Token is {userToken} </Text>
+      <Text>User Email is {userData.email} </Text>
       <Text>User Name is {userData.name} </Text>
       <Link to={{ screen: 'Settings', params: { id: '47' } }}>
       Go to Settings
@@ -27,14 +27,7 @@ export default function ProfileScreen(props) {
       />
       <Button
         title="LOGOUT"
-        onPress={() => {
-            logout();
-            // props.navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: 'LoginScreen' }],
-            // })
-          }
-        }
+        onPress={handleSignOut}
       />
       <Button
         title="View Item Details"
