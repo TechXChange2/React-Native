@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { MY_IP, PORT } from '@env'
 //all functions are promises, so "THEN-able"
 
  function axiosCall(method, endpoint, data) {
-  const url = `http://192.168.1.8:8080${endpoint}`;
+  const url = `http://${process.env.MY_IP}:${process.env.PORT}${endpoint}`;
   return new Promise((resolve, reject) => {
     axios({method, url, data })
     .then(res => {
