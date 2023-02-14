@@ -14,6 +14,7 @@ const ContextProvider = ({children}) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   //Google API key: AIzaSyBjVph8imz-Y9y90SWJJG8SrWDviEMgl7w
+  //Button Colors: #007AFF
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

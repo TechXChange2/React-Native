@@ -9,17 +9,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { createUser } from '../API.js';
 
 
-// `email` VARCHAR(255) NOT NULL UNIQUE, DONE
-//   `name` VARCHAR(255) NOT NULL,
-//   `description` VARCHAR(255) NULL,
-//   `thumbnail_url` VARCHAR(255) NULL,
-//   `street` VARCHAR(255) NOT NULL,
-//   `city` VARCHAR(255) NOT NULL,
-//   `state` VARCHAR(255) NOT NULL,
-//   `latitude` FLOAT NOT NULL,
-//   `longitude` FLOAT NOT NULL
-
-
 export default function RegisterScreen() {
 
   const [email, setEmail] = React.useState();
@@ -47,7 +36,7 @@ export default function RegisterScreen() {
       state: locationArr[1],
       country: locationArr[2],
     }
-    console.log('User Obj', userObj);
+    // console.log('User Obj', userObj);
 
     createUserWithEmailAndPassword(auth, email, pass)
     .then(userCredentials => {
@@ -90,6 +79,7 @@ export default function RegisterScreen() {
         <TextInput
         style={styles.input}
         placeholder='email'
+        placeholderTextColor='lightgrey'
         onChangeText={(text) => setEmail(text)}
         onFocus={() => {setKeyOffset('-50'); setEmailInvalid(false)}}
         onSubmitEditing={() => setKeyOffset(200)}
@@ -99,6 +89,7 @@ export default function RegisterScreen() {
         <TextInput
         style={styles.input}
         placeholder='password'
+        placeholderTextColor='lightgrey'
         onChangeText={(text) => setPass(text)}
         secureTextEntry={true}
         onFocus={() => {setKeyOffset('-50'); setPassIsWeak(false)}}
@@ -108,6 +99,7 @@ export default function RegisterScreen() {
         <TextInput
         style={styles.input}
         placeholder='name'
+        placeholderTextColor='lightgrey'
         onChangeText={(text) => setName(text)}
         onFocus={() => {setKeyOffset('-50')}}
         onSubmitEditing={() => setKeyOffset(200)}
@@ -118,6 +110,7 @@ export default function RegisterScreen() {
         <TextInput
         style={styles.input}
         placeholder='brief about you'
+        placeholderTextColor='lightgrey'
         onChangeText={(text) => setDescription(text)}
         onFocus={() => {setKeyOffset('-50')}}
         onSubmitEditing={() => setKeyOffset(200)}
@@ -125,6 +118,7 @@ export default function RegisterScreen() {
         <TextInput
         style={styles.input}
         placeholder='profile pic (url)'
+        placeholderTextColor='lightgrey'
         onChangeText={(text) => setThumbnailUrl(text)}
         onFocus={() => {setKeyOffset(200)}}
         />
@@ -156,7 +150,7 @@ export default function RegisterScreen() {
         onPress={handleRegister}
         style={styles.button}
         >
-          <Text>Register</Text>
+          <Text style={styles.registerText}>Register</Text>
         </TouchableOpacity>
       </View>
     {/* <StatusBar style="auto" /> */}
@@ -180,24 +174,27 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputContainer: {
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     width: '80%'
   },
   input: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'white',
     marginTop: 10
   },
+  registerText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: 'white'
+  },
   buttonContainer: {
-    backgroundColor: 'lightblue',
+    backgroundColor: '#007AFF',
     marginTop: 20,
-    width: '60%',
-    // padding: 10
-
+    width: '60%'
   },
   button: {
     paddingVertical: 20,
@@ -224,9 +221,9 @@ const searchStyles = {
     height: 55
   },
   textInput: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'white',
     height: '100%',
-    color: 'red',
+    // color: 'red',
     // borderRadius: 5,
     paddingVertical: 5,
     paddingHorizontal: 10,

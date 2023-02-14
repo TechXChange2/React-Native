@@ -1,15 +1,17 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Platform, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import {Context} from '../../globals/context.js';
 import { TextInput } from 'react-native-paper';
 import { auth } from '../../globals/firebase.js';
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "firebase/auth";
 
 
 export default function LoginScreen({navigation}) {
   const [email, setEmail] = React.useState();
   const [pass, setPass] = React.useState();
+  const [resetPass, setResetPassword] = React.useState(false);
+  const [emailReset, setEmailReset] = React.useState();
   const [emailError, setEmailError] = React.useState(false);
   const [passError, setPassError] = React.useState(false);
   const [tooManyRequests, setTooManyRequests] = React.useState(false);
@@ -39,53 +41,96 @@ export default function LoginScreen({navigation}) {
         setPassError(false);
         setEmailError(false);
       }
-      if(err.code === 'auth/missing-email') {
-        setTooManyRequests(false);
-        setPassError(false);
-        setEmailError(false);
-      }
     })
   }
 
+  const handlePasswordReset = () => {
+    sendPasswordResetEmail(auth, emailReset)
+    .then((res) => {
+      console.log('pass reset link SENT', res)
+      // Password reset email sent!
+      // ..
+    })
+    .catch((err) => {
+      if(err.code === 'auth/invalid-email') {
+        setEmailError(true);
+      }
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      console.log('Error pass reset', JSON.stringify(err))
+    });
+  }
+
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      keyboardVerticalOffset={'-150'}
+      >
+      <View style={styles.header}>
+        <Text style={styles.headerText}>LOGIN</Text>
+      </View>
       <Text style={passError ? styles.errortext : styles.hide}>password is incorrect</Text>
       <Text style={emailError ? styles.errortext : styles.hide}>email is incorrect</Text>
       <Text style={tooManyRequests ? styles.errortext : styles.hide}>Sorry, too many requests. Try again later</Text>
+      <>
       <View style={styles.inputContainer}>
         <TextInput
-        style={styles.input}
+        style={resetPass ? styles.hide : styles.input}
         placeholder='email'
         onChangeText={(text) => setEmail(text)}
         defaultValue=''
         error={emailError ? true : false}
         />
         <TextInput
-        style={styles.input}
+        style={resetPass ? styles.hide : styles.input}
         placeholder='password'
         onChangeText={(text) => setPass(text)}
         secureTextEntry={true}
         defaultValue=''
         error={passError ? true : false}
         />
+        <TextInput
+        style={resetPass ? styles.input : styles.hide}
+        placeholder='email for password reset'
+        onChangeText={(text) => setEmailReset(text)}
+        />
       </View>
+      </>
+      {
+        !resetPass && (
+        <Button
+        title='Forgot Password?'
+        onPress={() => setResetPassword(true)}
+        />
+        )
+      }
+        {
+          resetPass && (
+            <>
+            <Button
+            title='Send Reset Link'
+            onPress={() => {handlePasswordReset()}}
+            />
+            <Button
+            title='Return to Login'
+            onPress={() => {setResetPassword(false); setEmailError(false)}}
+            />
+            </>
+          )
+        }
       <View style={styles.buttonContainer}>
         <TouchableOpacity
         onPress={handleLogin}
         style={styles.button}
         >
-          <Text>Login</Text>
+          <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-        onPress={() => navigation.navigate('RegisterScreen')}
-        style={styles.button}
-        >
-          <Text>Register</Text>
-        </TouchableOpacity>
-      </View>
-
+      <Text style={{marginTop: 25}}>Don't have an Account? <Text
+      style={styles.blue}
+      onPress={() => navigation.navigate('RegisterScreen')}
+      >Register here</Text></Text>
     {/* <StatusBar style="auto" /> */}
     </KeyboardAvoidingView>
   );
@@ -95,11 +140,32 @@ const styles = StyleSheet.create({
   hide: {
     display: 'none'
   },
+  show: {
+    // display: 'block'
+  },
+  header: {
+    height: '15%',
+    // backgroundColor: 'green'
+  },
+  headerText: {
+    fontSize: 40,
+    color: '#007AFF'
+  },
+  blue: {
+    fontSize: '18',
+    color: '#007AFF'
+  },
+  loginText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: 'white'
+  },
   errortext: {
     color: 'red'
   },
   container: {
     flex: 1,
+    // width: '100%',
     // backgroundColor: 'pink',
     alignItems: 'center',
     justifyContent: 'center',
@@ -113,16 +179,13 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   buttonContainer: {
-    backgroundColor: 'lightblue',
+    backgroundColor: '#007AFF',
     marginTop: 20,
     width: '60%'
-
   },
   button: {
     paddingVertical: 25,
     alignItems: 'center'
   },
-  buttonOutline: {
 
-  }
 });
