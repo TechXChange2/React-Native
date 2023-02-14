@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from 'react-native-paper';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { createUser, deleteUser } from '../API.js';
+import { GOOGLE_PLACES_WEB_API } from '@env';
 
 
 export default function RegisterScreen() {
@@ -22,6 +23,7 @@ export default function RegisterScreen() {
   const [street, setStreet] = React.useState();
   const [cityStateCountry, setCityStateCountry] = React.useState();
   const [keyOffset, setKeyOffset] = React.useState(200);
+
 
   const handleRegister = () => {
     var locationArr = cityStateCountry.split(', ')
@@ -130,7 +132,7 @@ export default function RegisterScreen() {
       suppressDefaultStyles
       styles={searchStyles}
       query={{
-        key: 'AIzaSyBjVph8imz-Y9y90SWJJG8SrWDviEMgl7w',
+        key: process.env.GOOGLE_PLACES_WEB_API,
         language: 'en',
       }}
     />
