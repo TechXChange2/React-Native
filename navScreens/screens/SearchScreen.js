@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function SearchScreen({route}) {
 
   const params = route.params;
-  console.log('These are params in Search', params);
 
   return (
     <View style={styles.container}>

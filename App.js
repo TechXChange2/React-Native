@@ -1,43 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { Provider as PaperProvider } from 'react-native-paper';
+//React Context
+import {ContextProvider, Context} from './globals/context.js';
 //Screens
-import HomeTabs from './navScreens/TABNAV.js';
-import AddItemScreen from './navScreens/modals/AddItemScreen.js';
-import ProposeTradeScreen from './navScreens/modals/ProposeTradeScreen.js';
-import ItemDetailsScreen from './navScreens/screens/ItemDetailsScreen.js';
-import LoginScreen from './navScreens/modals/LoginScreen.js';
-import RegisterScreen from './navScreens/modals/RegisterScreen.js';
-
-const Stack = createNativeStackNavigator();
+import AuthPage from './navScreens/AuthPage.js';
+import AppPage from './navScreens/AppPage.js';
 
 export default function App() {
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          // backgroundColor: 'grey'
-        }
-      }}
-      >
-        <Stack.Screen
-        name="HomeTabs"
-        component={HomeTabs}
-        options={{headerShown: false}}
-        />
-        <Stack.Screen name="AddItem" component={AddItemScreen} />
-        <Stack.Screen name="ProposeTradeScreen" component={ProposeTradeScreen} />
-        <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{title: 'Item Details'}} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} options={{title: 'Login'}} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ContextProvider>
+      <PaperProvider>
+        <Root />
+      </PaperProvider>
+    </ContextProvider>
   );
 }
 
-//  {/* <StatusBar style="auto" /> */}
+function Root() { //renders Authentication stack or App stack, depending on global login state
+  const {userEmail} = React.useContext(Context);
+  return (
+    <>
+      {userEmail.length? <AppPage /> : <AuthPage />}
+      {/* <AuthPage /> */}
+    </>
+  )
+}
+
+// {/* <StatusBar style="auto" /> */}
 
 const styles = StyleSheet.create({
   container: {

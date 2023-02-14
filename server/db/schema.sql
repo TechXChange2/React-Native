@@ -6,16 +6,14 @@ USE techxchange;
 
 CREATE TABLE users (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `email` VARCHAR(255) NOT NULL UNIQUE,
-  `password` CHAR(60) NOT NULL,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
   `thumbnail_url` VARCHAR(255) NULL,
-  `name` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(255) NULL,
   `street` VARCHAR(255) NOT NULL,
-  `city` VARCHAR(255) NOT NULL,
-  `state` VARCHAR(255) NOT NULL,
-  `latitude` FLOAT NOT NULL,
-  `longitude` FLOAT NOT NULL
+  `city` VARCHAR(50) NOT NULL,
+  `state` VARCHAR(20) NOT NULL,
+  `country` VARCHAR(20)
 );
 
 CREATE TABLE devices (

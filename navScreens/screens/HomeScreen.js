@@ -1,45 +1,37 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import {Context} from '../../globals/context.js';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Link } from '@react-navigation/native';
 import * as API from '../API.js';
+import axios from 'axios';
 
 //Screens
 
-export default function ProfileScreen({ navigation }) {
-  const [user, setUser] = React.useState('');
-
-  React.useEffect(() => {
-    //get user id 1, set user
-
-  }, [])
-
-
+export default function ProfileScreen(props) {
+  const {userData, handleSignOut} = React.useContext(Context);
+  console.log('User Data Home', userData);
 
   return (
     <View style={styles.container}>
-      <Text>User Name is: {user.username}</Text>
+      <Text>User Email is {userData.email} </Text>
+      <Text>User Name is {userData.name} </Text>
       <Link to={{ screen: 'Settings', params: { id: '47' } }}>
       Go to Settings
       </Link>
       <Button
         title="Add Item"
-        onPress={() => navigation.navigate('AddItem', {
+        onPress={() => props.navigation.navigate('AddItem', {
           itemId: 12
         })}
       />
       <Button
         title="LOGOUT"
-        onPress={() =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'LoginScreen' }],
-          })
-        }
+        onPress={handleSignOut}
       />
       <Button
         title="View Item Details"
-        onPress={() => navigation.navigate('ItemDetails', {
+        onPress={() => props.navigation.navigate('ItemDetails', {
           itemId: 21
         })
         }
