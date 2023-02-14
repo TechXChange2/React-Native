@@ -23,7 +23,7 @@ export default function RegisterScreen() {
   const [street, setStreet] = React.useState();
   const [cityStateCountry, setCityStateCountry] = React.useState();
   const [keyOffset, setKeyOffset] = React.useState(200);
-
+  const [googleApiKey, dontSetGoogleApiKey] = React.useState(process.env.GOOGLE_PLACES_WEB_API);
 
   const handleRegister = () => {
     var locationArr = cityStateCountry.split(', ')
@@ -132,7 +132,7 @@ export default function RegisterScreen() {
       suppressDefaultStyles
       styles={searchStyles}
       query={{
-        key: process.env.GOOGLE_PLACES_WEB_API,
+        key: googleApiKey,
         language: 'en',
       }}
     />
