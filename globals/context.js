@@ -13,9 +13,11 @@ const ContextProvider = ({children}) => {
   const [userToken, setUserToken] = React.useState('null');
   const [isLoading, setIsLoading] = React.useState(false);
 
+  //Google API key: AIzaSyBjVph8imz-Y9y90SWJJG8SrWDviEMgl7w
+
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('auth state changed.....');
+      console.log('AUTH STATE changed with user:', user);
       if(user) {
         console.log('loggin in...')
         setUserEmail(user.email);

@@ -19,7 +19,6 @@ export default function LoginScreen({navigation}) {
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, pass)
     .then(userCredentials => {
-      // console.log('Success Reg (for json): ', JSON.stringify(userCredentials));
       console.log('Success Login (email): ', userCredentials.user.email);
     })
     .catch(err => {

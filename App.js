@@ -23,6 +23,7 @@ function Root() { //renders Authentication stack or App stack, depending on glob
   return (
     <>
       {userEmail.length? <AppPage /> : <AuthPage />}
+      {/* <AuthPage /> */}
     </>
   )
 }

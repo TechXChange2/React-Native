@@ -9,7 +9,7 @@ import axios from 'axios';
       resolve(res);
     })
     .catch(err => {
-      console.error('Err HERE', JSON.parse(JSON.stringify(err)));
+      console.error('Err HERE', err);
       reject(err);
     })
   })
@@ -19,6 +19,19 @@ import axios from 'axios';
 export function getAllInvolvedTrades(userID) {
   return new Promise((resolve,reject) => {
     axiosCall('post', '/trades/involved', {userID})
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+
+export function createUser(userObj) {
+  //console.log('TRADEOBJ: ', tradeObj)
+  return new Promise((resolve,reject) => {
+    axiosCall('post', '/users', userObj)
     .then(res => {
       resolve(res);
     })

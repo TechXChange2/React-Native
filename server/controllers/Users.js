@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const db = require('../db');
 
 module.exports = {
@@ -24,26 +23,33 @@ module.exports = {
     }
   },
   createUser: async (req, res) => {
-    const { body: data } = req;
-    const description = data.description ?? null;
+    const data = req.body;
 
-    try {
-      const salt = await bcrypt.genSalt();
-      const hash = await bcrypt.hash(data.password, salt);
+    console.log('create user body:', data);
+    let qString = `INSERT INTO users (name, email, description, thumbnail_url, street, city, state, country) VALUES ("${data.name}", "${data.email}", "${data.description}", "${data.thumbnail_url}", "${data.street}", "${data.city}", "${data.state}", "${data.country}");`;
 
-      let query = `INSERT INTO users (name, email, password, description, thumbnail_url, street, city, state, latitude, longitude) VALUES ("${data.name}", "${data.email}", "${hash}", "${description}", "${data.thumbnail_url}", "${data.street}", "${data.city}", "${data.state}", ${data.latitude}, ${data.longitude});`;
-      const conn = db.promise();
-      await conn.execute(query);
+    db.query(qString, function(err, results) {
+      if(err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+      res.status(200).send(results);
+    })
 
-      query = `SELECT * FROM users WHERE email = "${data.email}"`;
-      const [[user]] = await conn.query(query);
+    // try {
 
-      delete user.password;
 
-      res.status(201).json(user);
-    } catch (err) {
-      res.status(500).send(err);
-    }
+    //   const conn = db.promise();
+    //   await conn.execute(query);
+
+    //   query = `SELECT * FROM users WHERE email = "${data.email}"`;
+    //   const [[user]] = await conn.query(query);
+
+    //   res.status(201).json(user);
+    // } catch (err) {
+    //   res.status(500).send(err);
+    // }
   },
   getUser: async (req, res) => {
     const userEmail = req.query.email;
