@@ -6,7 +6,7 @@ import { auth } from '../../globals/firebase.js';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from 'react-native-paper';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { createUser } from '../API.js';
+import { createUser, deleteUser } from '../API.js';
 
 
 export default function RegisterScreen() {
@@ -14,6 +14,7 @@ export default function RegisterScreen() {
   const [email, setEmail] = React.useState();
   const [pass, setPass] = React.useState();
   const [emailInvalid, setEmailInvalid] = React.useState(false);
+  const [userExists, setUserExists] = React.useState(false);
   const [passIsWeak, setPassIsWeak] = React.useState(false);
   const [name, setName] = React.useState();
   const [description, setDescription] = React.useState();
@@ -23,9 +24,7 @@ export default function RegisterScreen() {
   const [keyOffset, setKeyOffset] = React.useState(200);
 
   const handleRegister = () => {
-    console.log('City..: ', cityStateCountry)
     var locationArr = cityStateCountry.split(', ')
-    console.log('Split..: ', locationArr)
     var userObj = {
       email,
       name,
@@ -38,31 +37,21 @@ export default function RegisterScreen() {
     }
     // console.log('User Obj', userObj);
 
-    createUserWithEmailAndPassword(auth, email, pass)
-    .then(userCredentials => {
-      // console.log('Success Reg (for json): ', JSON.stringify(userCredentials));
-      console.log('Success Reg (email): ', userCredentials.user.email);
-      //CREATE USER
-      createUser(userObj)
+    createUser(userObj)
       .then(res => {
-        console.log('Success from createUser', res.data)
+        console.log('Added User to DB', res.data)
+        createUserWithEmailAndPassword(auth, email, pass)
+        .then(res => {
+          console.log('Added User to FB')
+        })
+        .catch(err => {
+          console.log('Error adding user to FB', err);
+        })
       })
       .catch(err => {
-        console.log('error from createUser', err.message);
+        console.log('Couldnt add user to DB..', err);
+        setUserExists(true);
       })
-    })
-    .catch(err => {
-      console.log('Error in registering', JSON.stringify(err));
-      // console.log('Err', err.code);
-      if(err.code === 'auth/weak-password') {
-        console.log('WEAK PASS')
-        setPassIsWeak(true);
-      }
-      if(err.code === 'auth/invalid-email') {
-        console.log('INVALID EMAIL')
-        setEmailInvalid(true);
-      }
-    })
   }
 
 
@@ -76,6 +65,7 @@ export default function RegisterScreen() {
 
       <View style={styles.inputContainer}>
         <Text style={emailInvalid ? styles.error : styles.hide}>email is invalid</Text>
+        <Text style={userExists ? styles.error : styles.hide}>email already exists</Text>
         <TextInput
         style={styles.input}
         placeholder='email'

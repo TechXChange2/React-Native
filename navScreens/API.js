@@ -9,7 +9,7 @@ import axios from 'axios';
       resolve(res);
     })
     .catch(err => {
-      console.error('Err HERE', err);
+      // console.error('Err HERE', err);
       reject(err);
     })
   })
@@ -32,6 +32,18 @@ export function createUser(userObj) {
   //console.log('TRADEOBJ: ', tradeObj)
   return new Promise((resolve,reject) => {
     axiosCall('post', '/users', userObj)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+export function deleteUser(userEmail) {
+  //console.log('TRADEOBJ: ', tradeObj)
+  return new Promise((resolve,reject) => {
+    axiosCall('delete', `/users?email=${userEmail}`)
     .then(res => {
       resolve(res);
     })

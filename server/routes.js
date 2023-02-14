@@ -10,9 +10,8 @@ const {
 
 router.get('/users/user', Users.getUser);
 router.post('/users', Users.createUser);
+router.delete('/users', Users.deleteUser);
 router.get('/users/all', Users.getAllUsers);
-router.post('/users/auth', Users.authUser);
-
 router.get('/map', Map.getMap);
 
 router.post('/trades/involved', Trades.getInvolvedTrades); //WORKING

@@ -19,10 +19,10 @@ export default function App() {
 }
 
 function Root() { //renders Authentication stack or App stack, depending on global login state
-  const {userEmail} = React.useContext(Context);
+  const {userData} = React.useContext(Context);
   return (
     <>
-      {userEmail.length? <AppPage /> : <AuthPage />}
+      {userData?.email ? <AppPage /> : <AuthPage />}
       {/* <AuthPage /> */}
     </>
   )

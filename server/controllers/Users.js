@@ -1,32 +1,28 @@
 const db = require('../db');
 
 module.exports = {
-  authUser: async (req, res) => {
-    const { body: data } = req;
 
-    try {
-      const query = `SELECT * FROM users WHERE email = "${data.email}";`;
-      const conn = db.promise();
-      const [[user]] = await conn.query(query);
-      if (!user) {
-        res.status(200).json(null);
-        return;//
-      }
-
-      const match = await bcrypt.compare(data.password, user.password);
-
-      delete user.password;
-
-      res.status(200).json(match ? user : null);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  },
-  createUser: async (req, res) => {
+  createUser: (req, res) => {
     const data = req.body;
 
     console.log('create user body:', data);
     let qString = `INSERT INTO users (name, email, description, thumbnail_url, street, city, state, country) VALUES ("${data.name}", "${data.email}", "${data.description}", "${data.thumbnail_url}", "${data.street}", "${data.city}", "${data.state}", "${data.country}");`;
+
+    db.query(qString, function(err, results) {
+      if(err) {
+        console.log('Error in Controllers: \n', err.sqlMessage);
+        res.status(500).send(err.sqlMessage);
+        return;
+      }
+      res.status(200).send(results);
+    })
+
+  },
+
+  deleteUser: (req, res) => {
+    const userEmail = req.query.email;
+
+    let qString = `DELETE from users WHERE email='${userEmail}';`;
 
     db.query(qString, function(err, results) {
       if(err) {
@@ -37,19 +33,6 @@ module.exports = {
       res.status(200).send(results);
     })
 
-    // try {
-
-
-    //   const conn = db.promise();
-    //   await conn.execute(query);
-
-    //   query = `SELECT * FROM users WHERE email = "${data.email}"`;
-    //   const [[user]] = await conn.query(query);
-
-    //   res.status(201).json(user);
-    // } catch (err) {
-    //   res.status(500).send(err);
-    // }
   },
   getUser: async (req, res) => {
     const userEmail = req.query.email;
