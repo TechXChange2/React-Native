@@ -40,6 +40,18 @@ export function createUser(userObj) {
     })
   })//end Promise
 }
+export function deleteUser(userEmail) {
+  //console.log('TRADEOBJ: ', tradeObj)
+  return new Promise((resolve,reject) => {
+    axiosCall('delete', `/users?email=${userEmail}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
 
 export function createTrade(tradeObj) {
   //console.log('TRADEOBJ: ', tradeObj)

@@ -1,28 +1,8 @@
 const db = require('../db');
 
 module.exports = {
-  authUser: async (req, res) => {
-    const { body: data } = req;
 
-    try {
-      const query = `SELECT * FROM users WHERE email = "${data.email}";`;
-      const conn = db.promise();
-      const [[user]] = await conn.query(query);
-      if (!user) {
-        res.status(200).json(null);
-        return;//
-      }
-
-      const match = await bcrypt.compare(data.password, user.password);
-
-      delete user.password;
-
-      res.status(200).json(match ? user : null);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  },
-  createUser: async (req, res) => {
+  createUser: (req, res) => {
     const data = req.body;
 
     console.log('create user body:', data);
@@ -37,19 +17,22 @@ module.exports = {
       res.status(200).send(results);
     })
 
-    // try {
+  },
 
+  deleteUser: (req, res) => {
+    const userEmail = req.query.email;
 
-    //   const conn = db.promise();
-    //   await conn.execute(query);
+    let qString = `DELETE from users WHERE email='${userEmail}';`;
 
-    //   query = `SELECT * FROM users WHERE email = "${data.email}"`;
-    //   const [[user]] = await conn.query(query);
+    db.query(qString, function(err, results) {
+      if(err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+      res.status(200).send(results);
+    })
 
-    //   res.status(201).json(user);
-    // } catch (err) {
-    //   res.status(500).send(err);
-    // }
   },
   getUser: async (req, res) => {
     const userEmail = req.query.email;

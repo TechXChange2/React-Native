@@ -6,7 +6,7 @@ import { auth } from '../../globals/firebase.js';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from 'react-native-paper';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { createUser } from '../API.js';
+import { createUser, deleteUser } from '../API.js';
 
 
 export default function RegisterScreen() {
@@ -38,6 +38,27 @@ export default function RegisterScreen() {
     }
     // console.log('User Obj', userObj);
 
+    createUser(userObj)
+      .then(res => {
+        console.log('Added User to DB', res.data)
+        createUserWithEmailAndPassword(auth, email, pass)
+        .then(res => {
+          console.log('Added User to FB')
+        })
+        .catch(err => {
+          console.log('Error adding user to FB', err.message);
+          deleteUser(userEmail)
+          .then(res => {
+            console.log('deleted user from DB')
+          })
+          .catch(err => {
+            console.log('couldnt delete user from db.. oops, not synced with FB now');
+          })
+        })
+      })
+      .catch(err => {
+        console.log('Couldnt add user to DB..', err.message);
+      })
     createUserWithEmailAndPassword(auth, email, pass)
     .then(userCredentials => {
       // console.log('Success Reg (for json): ', JSON.stringify(userCredentials));

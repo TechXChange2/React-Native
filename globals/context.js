@@ -8,7 +8,6 @@ import { signOut } from "firebase/auth";
 const Context = React.createContext();
 
 const ContextProvider = ({children}) => {
-  const [userEmail, setUserEmail] = React.useState('');
   const [userData, setUserData] = React.useState({});
   const [userToken, setUserToken] = React.useState('null');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -21,11 +20,9 @@ const ContextProvider = ({children}) => {
       console.log('AUTH STATE changed with user:', user);
       if(user) {
         console.log('loggin in...')
-        setUserEmail(user.email);
         getSetUserData(user.email);
       } else {
         console.log('logging out...')
-        setUserEmail('');
         setUserData({});
       }
     })
@@ -56,7 +53,6 @@ const ContextProvider = ({children}) => {
 
   return (
     <Context.Provider value={{
-      userEmail,
       userData,
       handleSignOut
       }}>
