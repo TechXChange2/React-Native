@@ -10,7 +10,7 @@ module.exports = {
       const [[user]] = await conn.query(query);
       if (!user) {
         res.status(200).json(null);
-        return;
+        return;//
       }
 
       const match = await bcrypt.compare(data.password, user.password);
