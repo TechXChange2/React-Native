@@ -9,7 +9,7 @@ import axios from 'axios';
       resolve(res);
     })
     .catch(err => {
-      console.error('Err HERE', err);
+      // console.error('Err HERE', err);
       reject(err);
     })
   })

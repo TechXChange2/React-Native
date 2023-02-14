@@ -10,8 +10,8 @@ module.exports = {
 
     db.query(qString, function(err, results) {
       if(err) {
-        console.log(err);
-        res.status(500).send(err);
+        console.log('Error in Controllers: \n', err.sqlMessage);
+        res.status(500).send(err.sqlMessage);
         return;
       }
       res.status(200).send(results);
