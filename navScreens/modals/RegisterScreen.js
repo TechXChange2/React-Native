@@ -8,6 +8,7 @@ import { TextInput } from 'react-native-paper';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { createUser, deleteUser } from '../API.js';
 import { GOOGLE_PLACES_WEB_API } from '@env';
+import { ActivityIndicator } from 'react-native-paper';
 
 
 export default function RegisterScreen() {
@@ -24,9 +25,10 @@ export default function RegisterScreen() {
   const [cityStateCountry, setCityStateCountry] = React.useState();
   const [keyOffset, setKeyOffset] = React.useState(200);
   const [googleApiKey, dontSetGoogleApiKey] = React.useState(process.env.GOOGLE_PLACES_WEB_API);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleRegister = () => {
-    var locationArr = cityStateCountry.split(', ')
+    var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : []
     var userObj = {
       email,
       name,
@@ -45,14 +47,17 @@ export default function RegisterScreen() {
         createUserWithEmailAndPassword(auth, email, pass)
         .then(res => {
           console.log('Added User to FB')
+          setIsLoading(false);
         })
         .catch(err => {
           console.log('Error adding user to FB', err);
+          setIsLoading(false);
         })
       })
       .catch(err => {
         console.log('Couldnt add user to DB..', err);
         setUserExists(true);
+        setIsLoading(false);
       })
   }
 
@@ -139,10 +144,22 @@ export default function RegisterScreen() {
     {/* REGISTER BUTTON */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-        onPress={handleRegister}
+        onPress={() => {setIsLoading(true); handleRegister()}}
         style={styles.button}
         >
-          <Text style={styles.registerText}>Register</Text>
+        {
+          isLoading ? (
+            <ActivityIndicator
+            animating={true}
+            color='white'
+            // color={MD2Colors.red800}
+            size='small'
+            />
+          ) : (
+            <Text style={styles.registerText}>Register</Text>
+          )
+        }
+
         </TouchableOpacity>
       </View>
     {/* <StatusBar style="auto" /> */}

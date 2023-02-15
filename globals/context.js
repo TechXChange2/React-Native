@@ -20,7 +20,10 @@ const ContextProvider = ({children}) => {
       console.log('AUTH STATE changed with user:', user);
       if(user) {
         console.log('loggin in...')
-        getSetUserData(user.email);
+        setIsLoading(true);
+        getSetUserData(user.email)
+        .then(res => setIsLoading(false))
+        .catch(err => console.log('couldnt getSetUser...'))
       } else {
         console.log('logging out...')
         setUserData({});
@@ -30,13 +33,17 @@ const ContextProvider = ({children}) => {
   }, [])
 
   const getSetUserData = (email) => {
-    API.getUserFromEmail(email)
-    .then(res => {
-      // console.log('context user res\n', res.data);
-      setUserData(res.data[0]);
-    })
-    .catch(err => {
-      console.log('error in getSetUserData', err);
+    return new Promise((resolve, reject) => {
+      API.getUserFromEmail(email)
+      .then(res => {
+        // console.log('context user res\n', res.data);
+        setUserData(res.data[0]);
+          resolve('success')
+      })
+      .catch(err => {
+        console.log('error in getSetUserData', err);
+        reject('error')
+      })
     })
   }
 
@@ -54,7 +61,8 @@ const ContextProvider = ({children}) => {
   return (
     <Context.Provider value={{
       userData,
-      handleSignOut
+      handleSignOut,
+      isLoading
       }}>
       {children}
     </Context.Provider>
