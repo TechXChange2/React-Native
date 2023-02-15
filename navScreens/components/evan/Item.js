@@ -1,22 +1,27 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Avatar } from 'react-native-paper'
+import { Context } from '../../../globals/context.js'
 
-const Item = ({id}) => {
+const Item = ({item}) => {
+  const {nav} = React.useContext(Context);
+
+//navigation.navigate('ItemDetail', {itemId})
   return (
     <View style={styles.container}>
-      <View style={styles.avatar}>
-        <Avatar.Image size={50} source={require('../../../assets/icon.png')} />
-      </View>
+      <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemId: item.id})} style={styles.avatar}>
+    {/* <Avatar.Image size={100} source={require('../../../assets/icon.png')} /> */}
+        <Avatar.Image size={100} source={{ url: item.thumbnail_url}} />
+      </TouchableOpacity>
       <View style={styles.info}>
         <View style={styles.title}>
-          <Text>Title id: {id}</Text>
+          <Text style={styles.titleText}>{item.name}</Text>
         </View>
         <View style={styles.description}>
-          <Text>Description..</Text>
+          <Text style={styles.descText}>Description: {item.description}</Text>
         </View>
         <View style={styles.condition}>
-          <Text>Condition..</Text>
+          <Text style={styles.condText}>Condition: {item.item_condition}</Text>
         </View>
       </View>
     </View>
@@ -27,21 +32,40 @@ export default Item
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'lightblue'
+    flexDirection: 'row',
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightblue'
+    // backgroundColor: 'lightblue',
   },
   avatar: {
-    backgroundColor: 'yellow'
+    // backgroundColor: 'pink',
+    flex: .5
   },
   info: {
-    backgroundColor: 'green'
+    // backgroundColor: 'green',
+    flex: 1,
+    justifyContent: 'space-between'
   },
   title: {
-    backgroundColor: 'orange'
+    // backgroundColor: 'orange',
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: '700'
   },
   description: {
-    backgroundColor: 'tomato'
+    // backgroundColor: 'tomato'
+  },
+  descText: {
+    fontSize: 16
+  },
+  condText: {
+    fontWeight: '500'
   },
   condition: {
-    backgroundColor: 'lightblue'
+    // backgroundColor: 'lightblue',
+    alignItems: 'flex-end'
   }
 })

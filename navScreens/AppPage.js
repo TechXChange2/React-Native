@@ -49,7 +49,7 @@ export default function AppPage() {
 
 //TABS PAGE
 
-function HomeTabs() {
+function HomeTabs({navigation}) {
 
   return (
       <Tab.Navigator
