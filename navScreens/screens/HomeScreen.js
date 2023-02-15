@@ -17,8 +17,8 @@ import YourItems from '../components/evan/YourItems.js';
 export default function ProfileScreen(props) {
   const {userData, handleSignOut, isLoading} = React.useContext(Context);
   // console.log('Nav?', props.navigation);
-  const {setNav} = React.useContext(Context);
-  setNav(props.navigation);
+  const {updateNav} = React.useContext(Context);
+  updateNav(props.navigation);
 
   if(isLoading || !Object.keys(userData).length) {
     return (

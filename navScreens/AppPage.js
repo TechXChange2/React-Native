@@ -70,7 +70,7 @@ function HomeTabs({navigation}) {
 
           return <Ionicons name={iconName} size={size} color={color}/>
         },//tabBarIcon
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'grey',
         tabBarActiveBackgroundColor: 'white',
         tabBarStyle: {

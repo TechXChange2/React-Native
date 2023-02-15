@@ -33,6 +33,11 @@ const ContextProvider = ({children}) => {
     return () => {unsubscribe()}
   }, [])
 
+  const updateNav = (nav) => {
+    setTimeout(() => {
+      setNav(nav)
+    }, 100);
+  }
   const getSetUserData = (email) => {
     return new Promise((resolve, reject) => {
       API.getUserFromEmail(email)
@@ -65,7 +70,7 @@ const ContextProvider = ({children}) => {
       handleSignOut,
       isLoading,
       nav,
-      setNav
+      updateNav
       }}>
       {children}
     </Context.Provider>
