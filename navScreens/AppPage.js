@@ -49,7 +49,7 @@ export default function AppPage() {
 
 //TABS PAGE
 
-function HomeTabs() {
+function HomeTabs({navigation}) {
 
   return (
       <Tab.Navigator
@@ -70,7 +70,7 @@ function HomeTabs() {
 
           return <Ionicons name={iconName} size={size} color={color}/>
         },//tabBarIcon
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'grey',
         tabBarActiveBackgroundColor: 'white',
         tabBarStyle: {

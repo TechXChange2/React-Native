@@ -119,6 +119,17 @@ export function getUserFromEmail(userEmail) {
     })
   })//end Promise
 }
+export function getUserFromId(userId) {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/users/user?userId=${userId}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
 
 export function updateOwners(userA, itemA, userB, itemB) {
   return new Promise((resolve,reject) => {
