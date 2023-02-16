@@ -1,4 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image, useWindowDimensions } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, Image, useWindowDimensions } from 'react-native';
+import { Avatar } from 'react-native-paper'
 // import { Button } from 'react-native-paper';
 import React from 'react'
 import * as API from '../../API.js';
@@ -23,6 +24,7 @@ const Trade = ({yourData, i, type, trade}) => {
     setTimeout(() => {
       setIsMounted(true);
     }, (70 * (2*i)));
+    console.log('mount trades')
   }, []);
 
   React.useEffect(() => { //set btnContent
@@ -162,30 +164,52 @@ const rerouteToItem = (item) => {
     <View style={[{maxWidth: screenWidth}, styles.container]}>
 
       <View style={styles.theSwap}>
-        <View style={[{ aspectRatio: 1 }], styles.imgBox}>
+        <View style={[{ aspectRatio: 1 }], [styles.imgBox, styles.imgBoxLeft]}>
+          <View style={styles.yourPic}>
+            <Avatar.Image size={45} source={{ url: yourData.thumbnail_url}} />
+          </View>
           <Image source={{uri: yourItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
         </View>
         <View style={styles.swapIcon}>
-          <Ionicons name='swap-horizontal-outline' size={40} color='#007AFF'/>
+          <Ionicons name='swap-horizontal-outline' size={35} color='#007AFF'/>
         </View>
-        <View style={[{ aspectRatio: 1 }], styles.imgBox}>
+        <View style={[{ aspectRatio: 1 }], [styles.imgBox, styles.imgBoxRight]}>
+          <View style={styles.theirPic}>
+            <Avatar.Image size={45} source={{ url: theirData.thumbnail_url}} />
+          </View>
           <Image source={{uri: theirItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
         </View>
         {/* <Button icon="account-switch" buttonColor='#007AFF' mode="contained" onPress={() => console.log('Pressed')}>
           {btnContent}
         </Button> */}
       </View>
-      <View style={styles.btnBox}>
-        <TouchableOpacity
-        touchableWithoutFeedback
-        onPress={()=> console.log('click')}
-        >
-          <Text style={styles.btnText}>{btnContent}</Text>
-          {/* <Text style={styles.btnText}>one two three four five six</Text> */}
-        </TouchableOpacity>
-      </View>
+      { !btnDisabled ? (
+        <View style={styles.btnBox}>
+          <TouchableOpacity
+          onPress={()=> {console.log('click'); updateTradeStatus()}}
+          style={styles.btn}
+          >
+            <Text style={styles.btnText}>{btnContent}</Text>
+            {/* <Text style={styles.btnText}>one two three four five six</Text> */}
+            {/* <Text style={styles.btnText}>one two three four five six seven eight nine ten</Text> */}
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.btnBox}>
+          <TouchableWithoutFeedback
+          style={styles.btn}
+          disabled
+          >
+            {/* <Text style={styles.btnText}>{btnContent}</Text> */}
+            <Text style={[styles.btnText, styles.disabled]}>{btnContent}</Text>
+            {/* <Text style={styles.btnText}>one two three four five six seven eight nine ten</Text> */}
+          </TouchableWithoutFeedback>
+        </View>
+      )
 
-      {/* <Text>Trade Item with id: {}</Text> */}
+      }
+
+
     </View>
   )
 }
@@ -197,15 +221,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 10,
     // gap: 40,
-    backgroundColor: 'yellow',
-    marginVertical: 10,
+    // backgroundColor: 'yellow',
   },
   theSwap: {
     flexDirection: 'row',
-    flex: 2
+    flex: 2,
+    alignItems: 'center'
+  },
+  yourPic: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 10
+  },
+  theirPic: {
+    // backgroundColor: 'red',
+    position: 'absolute',
+    top: 0,
+    left: '100%',
+    transform: [{translateX: -36}, {translateY: 0}],
+    zIndex: 10
   },
   swapIcon: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginHorizontal: -3
   },
   btnBox: {
     padding: 10,
@@ -214,14 +253,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
     // flexDirection: 'row'
   },
+  btn: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    borderRadius: 10
+  },
   btnText: {
     textAlign: 'center',
-    color: '#007AFF'
+    color: 'white',
+    fontSize: 18
+  },
+  disabled: {
+    color: 'grey'
   },
   imgBox: {
-    // borderRadius: 20,
+    // backgroundColor: 'blue',
+    position: 'relative',
     overflow: 'hidden',
+    paddingVertical: 30,
+    paddingHorizontal: 2,
   },
+  imgBoxLeft: {paddingLeft: 8},
+  imgBoxRight: {paddingRight: 8},
   img: {
     height: 100,
     borderRadius: 20

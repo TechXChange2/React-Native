@@ -9,59 +9,26 @@ import Trade from './Trade.js';
 
 const PendingTrades = () => {
   const {userData} = React.useContext(Context);
+//your trades, your offers,
+
 
 const [yourTrades, setYourTrades] = React.useState([]);
 const [yourOffers, setYourOffers] = React.useState([]);
-const [shownTrades, setShownTrades] = React.useState([]);
+// const [shownTrades, setShownTrades] = React.useState([]);
 const [currentType, setCurrentType] = React.useState('trade'); //or "offer"
 const [typeHTML, setTypeHTML] = React.useState('Showing Your Trades');
 const [noTradeView, setNoTradeView] = React.useState({display: 'none'});
 const [initialLoad, setInitialLoad] = React.useState(false);
 const [switchVal, setSwitchVal] = React.useState(true);
 
-React.useEffect(() => { //set HTML Text for TYPE
-  var typeText = currentType === 'trade' ? 'Showing Your Trades' : 'Showing Your Offers';
-  setTypeHTML(typeText);
-}, [currentType]);
-React.useEffect(() => { //set HTML Text for TYPE
-  if(!shownTrades.length && initialLoad) {
-    setNoTradeView({display: 'block'});
-    // console.log('timeout')
-  }
-}, [shownTrades]);
-
-
 React.useEffect(() => { //sets Trades
-  // console.log('User Data in Pending Trades,', userData);
-  if(userData.id) {
-    getSetTrades();
-  }
-}, [userData])
-React.useEffect(() => { //sets Trades
-  // console.log('User Data in Pending Trades,', userData);
   if(userData.id) {
     getSetTrades();
   }
 }, [])
 
-React.useEffect(() => { //sets displayed Trades
-  if(yourTrades.length || yourOffers.length) {
-    if(currentType === 'trade' && yourTrades.length) {
-      setShownTrades(yourTrades);
-      setNoTradeView({display: 'none'});
-    } else if(currentType === 'offer' && yourOffers.length) {
-      setShownTrades(yourOffers);
-      setNoTradeView({display: 'none'});
-    }
-  } else {
-    setShownTrades([]);
-  }
-}, [yourTrades, yourOffers, currentType])
-
-
-//First
 const getSetTrades = () => {
-  // console.log('userData ID', userData.id);
+  console.log('getset called');
 API.getAllInvolvedTrades(userData.id)
 .then(res => {
   // console.log('res from getAllInvolvedTrades', res);
@@ -90,12 +57,15 @@ API.getAllInvolvedTrades(userData.id)
 })
 };
 
-const toggleTrade = () => {
+React.useEffect(() => { //Set Text
+  var typeText = currentType === 'trade' ? 'Showing Your Trades' : 'Showing Your Offers';
+  setTypeHTML(typeText);
+}, [currentType])
+
+const toggleTrade = () => { //Set Type
   var type = currentType === 'trade' ? 'offer' : 'trade';
   setCurrentType(type);
 }
-
-
 
 
   return (
@@ -103,7 +73,7 @@ const toggleTrade = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headLeft}>
-          <Switch value={switchVal} onValueChange={() => {setSwitchVal(!switchVal); toggleTrade()}} />
+          <Switch value={switchVal} color='#007AFF' onValueChange={() => {setSwitchVal(!switchVal); toggleTrade()}} />
           <Text style={styles.headText}>{typeHTML}</Text>
         </View>
         {/* <RefreshIcon fontSize='inherit' onClick={e => {getSetTrades()}} className="refresh-trades"/> */}
@@ -112,10 +82,16 @@ const toggleTrade = () => {
         </TouchableOpacity>
       </View>
       <View>
-        {shownTrades.map((trade, i) => {
-          // return <View key={i}><Text>I am a trade</Text></View>
-          return <Trade i={i} key={trade.id} type={currentType} yourData={userData} trade={trade}/>
-        })}
+
+        { currentType === 'trade' ? (
+          yourTrades.map((trade, i) => {
+            return <Trade i={i} key={trade.id} type={currentType} yourData={userData} trade={trade}/>
+          })
+        ) : (
+          yourOffers.map((trade, i) => {
+            return <Trade i={i} key={trade.id} type={currentType} yourData={userData} trade={trade}/>
+          })
+        )}
       </View>
       <View style={noTradeView}>
         <Text>
@@ -132,7 +108,7 @@ export default PendingTrades
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     // height: 200,
     // marginVertical: 30
   },
@@ -146,13 +122,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue',
     paddingTop: 5,
     fontSize: 18,
-    color: 'white',
+    color: '#007AFF',
     justifyContent: 'center'
   },
   headLeft: {
-    marginLeft: 10,
+    marginLeft: 30,
     marginVertical: 10,
-    width: '70%',
+    width: '65%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     // backgroundColor: 'red',
