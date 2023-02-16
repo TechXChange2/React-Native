@@ -4,6 +4,7 @@ import React from 'react'
 import { getBookmarksFromUserId, getItemFromID } from '../../API.js';
 import { Context } from '../../../globals/context.js';
 import Item from './Item.js'
+import NoItems from './NoItems.js'
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = React.useState();
@@ -49,6 +50,9 @@ const Bookmarks = () => {
       </View>
     )
   }
+  if(!bookmarks.length) {
+    return <NoItems textHeader='Your Bookmarks' text='bookmarks'/>
+  }
 
   if(!bookmarks.length) {
     return (
@@ -79,6 +83,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     // backgroundColor: 'silver',
     // height: 200,
+    minHeight: 150,
     marginVertical: 30,
     paddingBottom: 30
   },

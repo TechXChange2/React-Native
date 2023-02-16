@@ -20,12 +20,11 @@ const Trade = ({yourData, i, type, trade}) => {
   const [isTerminated, setIsTerminated] = React.useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
 
-  React.useEffect(() => { //start animation
-    setTimeout(() => {
-      setIsMounted(true);
-    }, (70 * (2*i)));
-    console.log('mount trades')
-  }, []);
+  // React.useEffect(() => { //start animation
+  //   setTimeout(() => {
+  //     setIsMounted(true);
+  //   }, (70 * (2*i)));
+  // }, []);
 
   React.useEffect(() => { //set btnContent
     if(['Pend','Comp','Term', 'You ', 'Sorr'].includes(btnContent.slice(0,4))) {

@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: 30,
-    paddingBottom: 20
+    paddingBottom: 40
   },
   logout: {
     alignItems: 'flex-end',

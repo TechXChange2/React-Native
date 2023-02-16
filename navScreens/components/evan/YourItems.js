@@ -5,6 +5,7 @@ import Item from './Item.js';
 import { getItemsFromUserID } from '../../API.js';
 import { Context } from '../../../globals/context.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import NoItems from './NoItems.js'
 
 
 const YourItems = () => {
@@ -37,9 +38,24 @@ const YourItems = () => {
   }
 
   if(!itemList.length) {
+
+    return <NoItems textHeader='Your Items' text='items'/>
+
     return (
       <View style={styles.container}>
-        <Text>You have no items yet.. Add one!</Text>
+        <View style={styles.header}>
+          <View style={styles.headerTextBox}>
+            <Text style={styles.headerText}>Your Items</Text>
+          </View>
+          <TouchableOpacity
+          onPress={() => nav.navigate('AddItem')}
+          >
+            <Ionicons name='add-outline' size={40} color='#007AFF'/>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.noItemsBox}>
+          <Text style={styles.noItemsText}>You have no items yet.. Add one!</Text>
+        </View>
       </View>
     )
   }
@@ -69,8 +85,8 @@ export default YourItems
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    // backgroundColor: 'silver',
     // height: 200,
+    minHeight: 150,
     marginVertical: 30,
     paddingBottom: 30
   },
@@ -90,5 +106,16 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24
+  },
+  noItemsBox: {
+    // backgroundColor: 'yellow',
+    // backgroundColor: 'rbg(237, 234, 225)',
+    backgroundColor: 'rbg(211, 240, 245)',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noItemsText: {
+    fontSize: 20
   }
 })
