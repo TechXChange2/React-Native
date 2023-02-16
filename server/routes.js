@@ -24,7 +24,7 @@ router.put('/trade/status/:tradeID/:newStatus', Trades.updateTradeFromID); //WOR
 router.post('/trades', Trades.createNewTrade); //WORKING
 
 router.post('/bookmark', Bookmarks.saveBookmark);
-router.get('/bookmarks', Bookmarks.getBookmarks);
+router.get('/bookmarks/:userID', Bookmarks.getBookmarks);
 
 router.get('/devices', Search.getAllDevices);
 

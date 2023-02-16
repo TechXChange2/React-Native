@@ -5,6 +5,8 @@ import * as API from '../../API.js';
 import { Switch } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Trade from './Trade.js';
+import NoItems from './NoItems.js'
+
 
 
 const PendingTrades = () => {
@@ -20,6 +22,7 @@ const [typeHTML, setTypeHTML] = React.useState('Showing Your Trades');
 const [noTradeView, setNoTradeView] = React.useState({display: 'none'});
 const [initialLoad, setInitialLoad] = React.useState(false);
 const [switchVal, setSwitchVal] = React.useState(true);
+
 
 React.useEffect(() => { //sets Trades
   if(userData.id) {
@@ -68,7 +71,11 @@ const toggleTrade = () => { //Set Type
 }
 
 
-  return (
+if(!yourTrades.length && !yourOffers.length) {
+  return <NoItems textHeader='Your Trades' text='trades'/>
+}
+
+return (
 
     <View style={styles.container}>
       <View style={styles.header}>
@@ -107,6 +114,7 @@ export default PendingTrades
 
 const styles = StyleSheet.create({
   container: {
+    minHeight: 150
     // flex: 1,
     // backgroundColor: 'lightblue',
     // height: 200,
