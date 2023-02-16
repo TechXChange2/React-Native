@@ -6,7 +6,7 @@ import { getItemsFromUserID } from '../../API.js';
 import { Context } from '../../../globals/context.js';
 
 const YourItems = () => {
-  const [itemList, setItemList] = React.useState([]);
+  const [itemList, setItemList] = React.useState(undefined);
   const {userData} = React.useContext(Context);
 
 
@@ -21,7 +21,7 @@ const YourItems = () => {
     })
   }, [])
 
-  if(!itemList.length) {
+  if(!itemList) {
     return (
       <View style={styles.container}>
         <ActivityIndicator
@@ -34,6 +34,14 @@ const YourItems = () => {
     )
   }
 
+  if(!itemList.length) {
+    return (
+      <View style={styles.container}>
+        <Text>You have no items yet.. Add one!</Text>
+      </View>
+    )
+  }
+
 
   return (
     <View style={styles.container}>
@@ -42,7 +50,7 @@ const YourItems = () => {
 
       </View>
       {itemList.map((item, i) => {
-        return <View key={item.id} style={styles.item}><Item item={item}/></View>
+        return <View key={item.id} style={styles.item}><Item isYours={true} item={item}/></View>
       })}
     </View>
   )

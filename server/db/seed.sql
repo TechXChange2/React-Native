@@ -46,8 +46,8 @@ VALUES (1, 1, 2, 4,'proposed');
 INSERT INTO trades (`proposer_id`, `proposer_device_id`, `receiver_id`, `receiver_device_id`, `status`)
 VALUES (1, 2, 3, 5,'proposed');
 
-INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (1, 1);
+INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (3, 1);
 
 INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (2, 2);
 
-INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (2, 1);
+INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (4, 1);
