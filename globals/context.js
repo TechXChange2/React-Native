@@ -11,16 +11,20 @@ const ContextProvider = ({children}) => {
   const [userData, setUserData] = React.useState({});
   const [userToken, setUserToken] = React.useState('null');
   const [isLoading, setIsLoading] = React.useState(false);
+  const [nav, setNav] = React.useState();
 
   //Google API key: AIzaSyBjVph8imz-Y9y90SWJJG8SrWDviEMgl7w
   //Button Colors: #007AFF
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('AUTH STATE changed with user:', user);
+      // console.log('AUTH STATE changed with user:', user);
       if(user) {
         console.log('loggin in...')
-        getSetUserData(user.email);
+        setIsLoading(true);
+        getSetUserData(user.email)
+        .then(res => setIsLoading(false))
+        .catch(err => console.log('couldnt getSetUser...'))
       } else {
         console.log('logging out...')
         setUserData({});
@@ -29,14 +33,23 @@ const ContextProvider = ({children}) => {
     return () => {unsubscribe()}
   }, [])
 
+  const updateNav = (nav) => {
+    setTimeout(() => {
+      setNav(nav)
+    }, 100);
+  }
   const getSetUserData = (email) => {
-    API.getUserFromEmail(email)
-    .then(res => {
-      // console.log('context user res\n', res.data);
-      setUserData(res.data[0]);
-    })
-    .catch(err => {
-      console.log('error in getSetUserData', err);
+    return new Promise((resolve, reject) => {
+      API.getUserFromEmail(email)
+      .then(res => {
+        // console.log('context user res\n', res.data);
+        setUserData(res.data[0]);
+          resolve('success')
+      })
+      .catch(err => {
+        console.log('error in getSetUserData', err);
+        reject('error')
+      })
     })
   }
 
@@ -54,7 +67,10 @@ const ContextProvider = ({children}) => {
   return (
     <Context.Provider value={{
       userData,
-      handleSignOut
+      handleSignOut,
+      isLoading,
+      nav,
+      updateNav
       }}>
       {children}
     </Context.Provider>

@@ -7,6 +7,7 @@ import { MY_IP, PORT } from '@env'
   const port = process.env.PORT;
   const url = `http://${localIP}:${port}${endpoint}`;
 
+
   return new Promise((resolve, reject) => {
     axios({method, url, data })
     .then(res => {
@@ -118,6 +119,17 @@ export function getUserFromEmail(userEmail) {
     })
   })//end Promise
 }
+export function getUserFromId(userId) {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/users/user?userId=${userId}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
 
 export function updateOwners(userA, itemA, userB, itemB) {
   return new Promise((resolve,reject) => {
@@ -133,6 +145,17 @@ export function updateOwners(userA, itemA, userB, itemB) {
 export function getTradeFromID(tradeID) {
   return new Promise((resolve,reject) => {
     axiosCall('get', `/trade/${tradeID}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+export function getBookmarksFromUserId(userId) {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/bookmarks/${userId}`)
     .then(res => {
       resolve(res);
     })
