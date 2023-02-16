@@ -55,7 +55,7 @@ export default function RegisterScreen() {
         })
       })
       .catch(err => {
-        console.log('Couldnt add user to DB..', err);
+        console.log('Couldnt add user to DB..', JSON.stringify(err));
         setUserExists(true);
         setIsLoading(false);
       })
