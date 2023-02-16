@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import React from 'react'
 import Item from './Item.js';
 import { getItemsFromUserID } from '../../API.js';
 import { Context } from '../../../globals/context.js';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const YourItems = () => {
   const [itemList, setItemList] = React.useState(undefined);
-  const {userData} = React.useContext(Context);
+  const {userData, nav} = React.useContext(Context);
 
 
   React.useEffect(() => {
@@ -46,8 +48,14 @@ const YourItems = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <Text style={styles.headerText}>Your Items</Text>
-
+        <View style={styles.headerTextBox}>
+          <Text style={styles.headerText}>Your Items</Text>
+        </View>
+        <TouchableOpacity
+        onPress={() => nav.navigate('AddItem')}
+        >
+          <Ionicons name='add-outline' size={40} color='#007AFF'/>
+        </TouchableOpacity>
       </View>
       {itemList.map((item, i) => {
         return <View key={item.id} style={styles.item}><Item isYours={true} item={item}/></View>
@@ -71,8 +79,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   header: {
+    // backgroundColor: 'grey',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginVertical: 12,
-    paddingLeft: 20
+    paddingHorizontal: 20
+  },
+  headerTextBox: {
+    justifyContent: 'center'
   },
   headerText: {
     fontSize: 24

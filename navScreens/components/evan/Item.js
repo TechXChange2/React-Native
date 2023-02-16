@@ -4,19 +4,19 @@ import { Avatar } from 'react-native-paper'
 import { Context } from '../../../globals/context.js'
 import { getUserFromId } from '../../API.js'
 
-const Item = ({item, isYours, ownerId}) => {
+const Item = ({item, isYours}) => {
   const {nav} = React.useContext(Context);
   const [soldBy, setSoldBy] = React.useState();
   const [ownerData, setOwnerData] = React.useState();
 
   React.useEffect(() => {
-    // if(!isYours) {
-    //   getUserFromId(ownderId)
-    //   .then(res => {
-    //     setOwnerData(res.data);
-    //   })
-    //   .catch(err => console.log('err in get user book item', err))
-    // }
+    if(!isYours) {
+      getUserFromId(item.user_id)
+      .then(res => {
+        setOwnerData(res.data[0]);
+      })
+      .catch(err => console.log('err in get user book item', err))
+    }
   }, [])
 
 
@@ -36,7 +36,12 @@ const Item = ({item, isYours, ownerId}) => {
         </View>
         { !isYours && (
         <View style={styles.soldBy}>
-          <Text style={styles.descText}>Sold By: {soldBy?.name}</Text>
+          <View>
+            <Avatar.Image size={50} source={{uri: ownerData?.thumbnail_url}} />
+          </View>
+          <View style={styles.nameBox}>
+            <Text style={styles.ownerName}>{ownerData?.name}</Text>
+          </View>
         </View>
         )}
         <View style={styles.condition}>
@@ -83,8 +88,23 @@ const styles = StyleSheet.create({
   condText: {
     fontWeight: '500'
   },
-  condition: {
+  soldBy: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    paddingLeft: 10,
+    // justifyContent: 'space-between',
     // backgroundColor: 'lightblue',
+  },
+  nameBox: {
+    // backgroundColor: 'orange',
+    justifyContent:'center'
+  },
+  ownerName: {
+    paddingLeft: 20,
+    fontSize: 25,
+    alignItems: 'center'
+  },
+  condition: {
     alignItems: 'flex-end'
   }
 })
