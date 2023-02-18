@@ -176,6 +176,32 @@ export function getAllUsers() {
   })//end Promise
 }
 
+export function getUserFromID(userID) {
+  console.log(userID);
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/users/userInfo?id=${userID}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+
+export function addBookmark(bookmarkObj) {
+console.log(bookmarkObj)
+  return new Promise((resolve,reject) => {
+    axiosCall('post', `/bookmark`, bookmarkObj)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+
 export function updateTradeFromID(tradeID, currentTradeStatus, isTerminate) {
   const statusList = ['proposed', 'approved', 'completed'];
   var newStatus = statusList[statusList.indexOf(currentTradeStatus) + 1];
