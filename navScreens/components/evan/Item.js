@@ -23,7 +23,7 @@ const Item = ({item, isYours}) => {
 //navigation.navigate('ItemDetail', {itemId})
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemId: item.id})} style={styles.avatar}>
+      <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: item.id})} style={styles.avatar}>
     {/* <Avatar.Image size={100} source={require('../../../assets/icon.png')} /> */}
         <Avatar.Image size={100} source={{ url: item.thumbnail_url}} />
       </TouchableOpacity>

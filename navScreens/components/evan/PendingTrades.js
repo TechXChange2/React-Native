@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Context } from '../../../globals/context.js';
-import * as API from '../../API.js';
+import { getAllInvolvedTrades } from '../../API.js';
 import { Switch } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Trade from './Trade.js';
@@ -32,9 +32,9 @@ React.useEffect(() => { //sets Trades
 
 const getSetTrades = () => {
   console.log('getset called');
-API.getAllInvolvedTrades(userData.id)
+getAllInvolvedTrades(userData.id)
 .then(res => {
-  // console.log('res from getAllInvolvedTrades', res);
+  console.log('Your Trades fired');
   var tempTrades = [];
   var tempOffers = [];
   var errTrades = [];
