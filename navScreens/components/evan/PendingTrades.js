@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { useIsFocused } from '@react-navigation/native'
 import { Context } from '../../../globals/context.js';
 import { getAllInvolvedTrades } from '../../API.js';
 import { Switch } from 'react-native-paper';
@@ -10,10 +11,11 @@ import NoItems from './NoItems.js'
 
 
 const PendingTrades = () => {
-  const {userData} = React.useContext(Context);
+  const {userData, isReady, setIsReady} = React.useContext(Context);
 //your trades, your offers,
 
 
+const [firstMount, setFirstMount] = React.useState(true);
 const [yourTrades, setYourTrades] = React.useState([]);
 const [yourOffers, setYourOffers] = React.useState([]);
 // const [shownTrades, setShownTrades] = React.useState([]);
@@ -22,19 +24,13 @@ const [typeHTML, setTypeHTML] = React.useState('Showing Your Trades');
 const [noTradeView, setNoTradeView] = React.useState({display: 'none'});
 const [initialLoad, setInitialLoad] = React.useState(false);
 const [switchVal, setSwitchVal] = React.useState(true);
-
-
-React.useEffect(() => { //sets Trades
-  if(userData.id) {
-    getSetTrades();
-  }
-}, [])
+const isFocused = useIsFocused();
 
 const getSetTrades = () => {
-  console.log('getset called');
+  // console.log('getset called');
 getAllInvolvedTrades(userData.id)
 .then(res => {
-  console.log('Your Trades fired');
+  // console.log('Your Trades fired');
   var tempTrades = [];
   var tempOffers = [];
   var errTrades = [];
@@ -59,6 +55,26 @@ getAllInvolvedTrades(userData.id)
   console.error('ERR in getAllInvolvedTrades', err);
 })
 };
+
+React.useEffect(() => { //sets Trades
+  if(userData.id) {
+    getSetTrades();
+  }
+  setFirstMount(false);
+}, [])
+
+
+if(isFocused && isReady.trades && !firstMount) {
+  //getSet your trades
+  if(userData.id) {
+    console.log('isFocused Trades CALLED');
+    getSetTrades();
+  }
+
+  let readyObj = isReady;
+  readyObj.trades = false;
+  setIsReady(readyObj);
+}
 
 React.useEffect(() => { //Set Text
   var typeText = currentType === 'trade' ? 'Showing Your Trades' : 'Showing Your Offers';

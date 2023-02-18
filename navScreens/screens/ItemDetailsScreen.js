@@ -12,7 +12,7 @@ import { Avatar } from 'react-native-paper';
 
 export default function ItemDetailsScreen({route, navigation}) {
   const itemId = route.params.itemID;
-  const {userData} = React.useContext(Context);
+  const {userData, isReady, setIsReady} = React.useContext(Context);
   const [itemInfo, setItemInfo] = useState({});
   const [sellerData, setSellerData] = React.useState();
 
@@ -54,9 +54,15 @@ const onAddButtonClick = (e) => {
     });
 };
 
+const resetBookmarksReady = () => {
+  let readyObj = isReady;
+  readyObj.bookmarks = true;
+  setIsReady(readyObj);
+};
+
   return ( sellerData && (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity style={styles.addBookmark} onPress={(e) => onAddButtonClick(e)}>
+      <TouchableOpacity style={styles.addBookmark} onPress={(e) => {resetBookmarksReady(); onAddButtonClick(e)}}>
         <Ionicons name='bookmarks-outline' size={40} color='#007AFF'/>
       </TouchableOpacity>
       <Text style={styles.itemName}>{itemInfo.name}</Text>

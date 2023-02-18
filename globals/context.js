@@ -11,6 +11,7 @@ const ContextProvider = ({children}) => {
   const [userData, setUserData] = React.useState({});
   const [userToken, setUserToken] = React.useState('null');
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isReady, setIsReady] = React.useState({yourItems: false, bookmarks: false, trades: false});
   const [nav, setNav] = React.useState();
 
   //Google API key: AIzaSyBjVph8imz-Y9y90SWJJG8SrWDviEMgl7w
@@ -69,6 +70,8 @@ const ContextProvider = ({children}) => {
       userData,
       handleSignOut,
       isLoading,
+      isReady,
+      setIsReady,
       nav,
       updateNav
       }}>
