@@ -14,12 +14,7 @@ export default function ItemDetailsScreen({route, navigation}) {
   const itemId = route.params.itemID;
   const {userData} = React.useContext(Context);
   const [itemInfo, setItemInfo] = useState({});
-  const [itemSellerName, setItemSellerName] = useState('');
-  const [itemSellerCity, setItemSellerCity] = useState('');
-  const [itemSellerState, setItemSellerState] = useState('');
-  const [itemSellerThumbnailURL, setItemSellerThumbnailURL] = useState('');
-
-
+  const [sellerData, setSellerData] = React.useState();
 
 
  useEffect(() => {
@@ -33,12 +28,11 @@ export default function ItemDetailsScreen({route, navigation}) {
 
 useEffect(() => {
   if (itemInfo) {
-  API.getUserFromID(itemInfo.user_id)
+    // console.log('item info', itemInfo);
+  API.getUserFromId(itemInfo.user_id)
     .then((response) => {
-      setItemSellerName(response.data[0].name)
-      setItemSellerCity(response.data[0].city)
-      setItemSellerState(response.data[0].state)
-      setItemSellerThumbnailURL(response.data[0].thumbnail_url)
+      // console.log('res in get user from id', response.data[0]);
+      setSellerData(response.data[0]);
 
     }).catch((error) => {
       console.log(error);
@@ -60,7 +54,7 @@ const onAddButtonClick = (e) => {
     });
 };
 
-  return (
+  return ( sellerData && (
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity style={styles.addBookmark} onPress={(e) => onAddButtonClick(e)}>
         <Ionicons name='bookmarks-outline' size={40} color='#007AFF'/>
@@ -75,11 +69,21 @@ const onAddButtonClick = (e) => {
         <Text style={styles.headerText}>Current Owner</Text>
         <View style={styles.currentOwnerInfoBody}>
           <View style={styles.avatar}>
-            <Avatar.Image size={100} source={{url: itemSellerThumbnailURL}} />
+            <Avatar.Image size={100} source={{url: sellerData.thumbnail_url}} />
           </View>
           <View style={styles.ownerDetails}>
-            <View style={styles.inlineStyle}><Ionicons name="person-outline" size={20}/><Text style={styles.detailText}>{itemSellerName}</Text></View>
-            <View style={styles.inlineStyle}><Ionicons name="location-outline" size={20}/><Text style={styles.detailText}>{itemSellerCity}, {itemSellerState}</Text></View>
+            <View style={styles.inlineStyle}>
+              <Ionicons name="person-outline" size={20}/>
+              <Text style={styles.detailText}>{sellerData.name}</Text>
+            </View>
+            <View style={styles.inlineStyle}>
+              <Ionicons name="location-outline" size={20}/>
+              <Text style={styles.detailText}>{sellerData.city}, {sellerData.state}</Text>
+            </View>
+            <View style={styles.inlineStyle1}>
+              <Ionicons name="reader-outline" size={20}/>
+              <Text style={styles.detailText1}>{sellerData.description}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -87,8 +91,14 @@ const onAddButtonClick = (e) => {
       <View style={styles.itemDetailsInfo} size={20} >
         {/* <Text style={styles.headerText}>Description</Text> */}
         <View style={styles.itemDetailsInfoBody}>
-          <View style={styles.inlineStyleDescription}><Ionicons name="list-outline" size={20}/><Text style={styles.detailText}>{itemInfo.description}</Text></View>
-          <View style={styles.inlineStyle}><Ionicons name="ribbon-outline" size={20}/><Text style={styles.detailText}>Condition: {itemInfo.item_condition}</Text></View>
+          <View style={styles.inlineStyleDescription}>
+            <Ionicons name="list-outline" size={20}/>
+            <Text style={styles.detailText}>{itemInfo.description}</Text>
+          </View>
+          <View style={styles.inlineStyle}>
+            <Ionicons name="ribbon-outline" size={20}/>
+            <Text style={styles.detailText}>Condition: {itemInfo.item_condition}</Text>
+          </View>
         </View>
       </View>
 
@@ -97,8 +107,9 @@ const onAddButtonClick = (e) => {
       </View>
 
     </ScrollView>
+  )
 
-  );
+);
 }
 
 const styles = StyleSheet.create({
@@ -124,12 +135,14 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   currentOwnerInfo: {
-    minHeight: 170,
+    minHeight: 190,
     backgroundColor: 'rgb(211, 240, 245)',
     paddingLeft: 20,
     width: '100%',
     fontSize: 24,
-    marginTop: 20
+    marginTop: 20,
+    paddingBottom: 20
+    // maxWidth: 375
   },
   currentOwnerInfoBody: {
     display: 'flex',
@@ -172,6 +185,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
     alignItems: 'center'
   },
+  inlineStyle1: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 5,
+    alignItems: 'center'
+  },
   inlineStyleDescription: {
     display: 'flex',
     flexDirection: 'row',
@@ -180,6 +199,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   detailText: {
+    marginLeft: 10,
+    fontSize: 18,
+   // marginTop: 15
+  },
+  detailText1: {
+    flex: 1,
     marginLeft: 10,
     fontSize: 18,
    // marginTop: 15
