@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import React from 'react'
 import Item from './Item.js';
+import { useIsFocused } from '@react-navigation/native'
 import { getItemsFromUserID } from '../../API.js';
 import { Context } from '../../../globals/context.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,19 +10,36 @@ import NoItems from './NoItems.js'
 
 
 const YourItems = () => {
+  const [firstMount, setFirstMount] = React.useState(true);
   const [itemList, setItemList] = React.useState(undefined);
-  const {userData, nav} = React.useContext(Context);
+  const {userData, nav, isReady, setIsReady} = React.useContext(Context);
+  const isFocused = useIsFocused();
 
-
-  React.useEffect(() => {
+  function getSetItems() {
     getItemsFromUserID(userData.id)
     .then(res => {
-      console.log('Your Items: ', res.data)
+      // console.log('Your Items: ', res.data)
       setItemList(res.data);
     })
     .catch(err => {
       console.warn('getItemsFromUserId error in YourItems', err);
     })
+  }
+
+  if(isFocused && isReady.yourItems && !firstMount) {
+    //getSet your items
+    console.log('isFocused yourItems CALLED');
+    getSetItems();
+    // reset isReady.yourItems to false
+    let readyObj = isReady;
+    readyObj.yourItems = false;
+    setIsReady(readyObj);
+  }
+
+
+  React.useEffect(() => {
+    getSetItems();
+    setFirstMount(false);
   }, [])
 
   if(!itemList) {

@@ -2,7 +2,10 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,9 +25,30 @@ const Tab = createBottomTabNavigator();
 
 
 export default function AppPage() {
+  const navRef = useNavigationContainerRef();
+  const routeNameRef = React.useRef();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+    ref={navRef}
+    onReady ={() => {
+      routeNameRef.current = navRef.getCurrentRoute().name;
+    }}
+    onStateChange={async ()=> {
+      const prevRouteName = routeNameRef.current;
+      const currentRouteName = navRef.getCurrentRoute().name;
+
+      // console.log('prev route name: ', prevRouteName)
+      // console.log('current route name: ', currentRouteName)
+      if (prevRouteName !== currentRouteName) {
+        // Save the current route name for later comparison
+        routeNameRef.current = currentRouteName;
+
+        console.log(`ROUTE CHANGED from ${prevRouteName} to ${currentRouteName}`);
+        // Replace the line below to add the tracker from a mobile analytics SDK
+      }
+    }}
+    >
       <Stack.Navigator
       initialRouteName='HomeTabs'
       screenOptions={{

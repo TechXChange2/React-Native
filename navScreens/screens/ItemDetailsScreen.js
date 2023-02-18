@@ -3,8 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, ScrollView, View, Image, Button, TouchableOpacity } from 'react-native';
 import * as API from '../API.js';
 import {Context} from '../../globals/context.js';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
@@ -12,12 +12,17 @@ import { Avatar } from 'react-native-paper';
 
 export default function ItemDetailsScreen({route, navigation}) {
   const itemId = route.params.itemID;
-  const {userData} = React.useContext(Context);
+  const {userData, isReady, setIsReady, bookmarksArr} = React.useContext(Context);
   const [itemInfo, setItemInfo] = useState({});
   const [sellerData, setSellerData] = React.useState();
+  const [alreadyBookmarked, setAlreadyBookmarked] = React.useState();
 
 
  useEffect(() => {
+  console.log('mounting......');
+  if(bookmarksArr.includes(itemId)) {
+    setAlreadyBookmarked(true);
+  }
   API.getItemFromID(itemId)
     .then((response) => {
       setItemInfo(response.data[0]);
@@ -41,6 +46,8 @@ useEffect(() => {
 }, [itemInfo]);
 
 const onAddButtonClick = (e) => {
+  console.log('add bookmark clicked');
+  setAlreadyBookmarked(true);
   e.preventDefault();
   const bookmarkObj = {
     itemID: itemId,
@@ -54,11 +61,23 @@ const onAddButtonClick = (e) => {
     });
 };
 
+const resetBookmarksReady = () => {
+  let readyObj = isReady;
+  readyObj.bookmarks = true;
+  setIsReady(readyObj);
+};
+
   return ( sellerData && (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity style={styles.addBookmark} onPress={(e) => onAddButtonClick(e)}>
-        <Ionicons name='bookmarks-outline' size={40} color='#007AFF'/>
+      {userData.id !== sellerData.id && (
+      <TouchableOpacity
+      style={styles.addBookmark}
+      onPress={(e) => {resetBookmarksReady(); onAddButtonClick(e)}}
+      disabled={alreadyBookmarked ? true : false}
+      >
+        <Ionicons name='bookmarks-outline' size={40} color={alreadyBookmarked ? 'grey' : '#007AFF'}/>
       </TouchableOpacity>
+      )}
       <Text style={styles.itemName}>{itemInfo.name}</Text>
       <View style={styles.avatar}>
         <Avatar.Image size={200} source={{url: itemInfo.thumbnail_url}} />
