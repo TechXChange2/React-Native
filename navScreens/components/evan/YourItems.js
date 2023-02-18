@@ -16,7 +16,7 @@ const YourItems = () => {
   React.useEffect(() => {
     getItemsFromUserID(userData.id)
     .then(res => {
-      // console.log('Items: ', res.data)
+      console.log('Your Items: ', res.data)
       setItemList(res.data);
     })
     .catch(err => {
@@ -38,26 +38,7 @@ const YourItems = () => {
   }
 
   if(!itemList.length) {
-
     return <NoItems textHeader='Your Items' text='items'/>
-
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerTextBox}>
-            <Text style={styles.headerText}>Your Items</Text>
-          </View>
-          <TouchableOpacity
-          onPress={() => nav.navigate('AddItem')}
-          >
-            <Ionicons name='add-outline' size={40} color='#007AFF'/>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.noItemsBox}>
-          <Text style={styles.noItemsText}>You have no items yet.. Add one!</Text>
-        </View>
-      </View>
-    )
   }
 
 
