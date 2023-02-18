@@ -10,7 +10,7 @@ import NoItems from './NoItems.js'
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = React.useState();
   const [firstMount, setFirstMount] = React.useState(true);
-  const {userData, isReady, setIsReady} = React.useContext(Context);
+  const {userData, isReady, setIsReady, setBookmarksArr} = React.useContext(Context);
   const isFocused = useIsFocused();
 
   function getSetBookmarks() {
@@ -18,10 +18,13 @@ const Bookmarks = () => {
     .then(res => {
       // console.log('Bookmarks: ', res.data);
       var promiseArr = [];
+      let itemIds = [];
       //go through array
       res.data.forEach(item => {
+        itemIds.push(item.item_id)
         promiseArr.push(getItemFromID(item.item_id))
       })//FOR EACH END
+      setBookmarksArr(itemIds);
       Promise.all(promiseArr)
       .then(items => {
         var tempArr = [];

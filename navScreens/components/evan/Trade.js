@@ -167,7 +167,9 @@ const rerouteToItem = (item) => {
           <View style={styles.yourPic}>
             <Avatar.Image size={45} source={{ url: yourData.thumbnail_url}} />
           </View>
-          <Image source={{uri: yourItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
+          <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: yourItem.id})}>
+            <Image source={{uri: yourItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
+          </TouchableOpacity>
         </View>
         <View style={styles.swapIcon}>
           <Ionicons name='swap-horizontal-outline' size={35} color='#007AFF'/>
@@ -176,7 +178,9 @@ const rerouteToItem = (item) => {
           <View style={styles.theirPic}>
             <Avatar.Image size={45} source={{ url: theirData.thumbnail_url}} />
           </View>
-          <Image source={{uri: theirItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
+          <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: theirItem.id})}>
+            <Image source={{uri: theirItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
+          </TouchableOpacity>
         </View>
         {/* <Button icon="account-switch" buttonColor='#007AFF' mode="contained" onPress={() => console.log('Pressed')}>
           {btnContent}
@@ -205,9 +209,7 @@ const rerouteToItem = (item) => {
           </TouchableWithoutFeedback>
         </View>
       )
-
       }
-
 
     </View>
   )
