@@ -176,18 +176,18 @@ export function getAllUsers() {
   })//end Promise
 }
 
-export function getUserFromID(userID) {
-  console.log(userID);
-  return new Promise((resolve,reject) => {
-    axiosCall('get', `/users/userInfo?id=${userID}`)
-    .then(res => {
-      resolve(res);
-    })
-    .catch(err => {
-      reject(err);
-    })
-  })//end Promise
-}
+// export function getUserFromID(userID) {
+//   console.log(userID);
+//   return new Promise((resolve,reject) => {
+//     axiosCall('get', `/users/userInfo?id=${userID}`)
+//     .then(res => {
+//       resolve(res);
+//     })
+//     .catch(err => {
+//       reject(err);
+//     })
+//   })//end Promise
+// }
 
 export function addBookmark(bookmarkObj) {
 console.log(bookmarkObj)
