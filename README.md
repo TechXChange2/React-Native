@@ -15,6 +15,8 @@ Amplify is Amazon's full stack project manager. It will make it easier to add an
 
 ###### Amplify + S3 config for app
 
-``` import { Amplify } from 'aws-amplify';
+```
+import { Amplify } from 'aws-amplify';
 import awsconfig from "./src/aws-exports.js";
-Amplify.configure(awsconfig); ```
+Amplify.configure(awsconfig);
+```
