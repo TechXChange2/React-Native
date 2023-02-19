@@ -23,8 +23,11 @@ router.post('/item/insert/:userID', Shared.insertDevice); //WORKING
 router.put('/trade/status/:tradeID/:newStatus', Trades.updateTradeFromID); //WORKING
 router.post('/trades', Trades.createNewTrade); //WORKING
 
+// router.get('/users/userInfo', Users.getUserByID);
+
+
 router.post('/bookmark', Bookmarks.saveBookmark);
-router.get('/bookmarks', Bookmarks.getBookmarks);
+router.get('/bookmarks/:userID', Bookmarks.getBookmarks);
 
 router.get('/devices', Search.getAllDevices);
 

@@ -1,19 +1,26 @@
 import React, { useContext } from 'react';
 import {Context} from '../../globals/context.js';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
-import { Link } from '@react-navigation/native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button } from 'react-native';
+import { Link, useIsFocused } from '@react-navigation/native';
 import * as API from '../API.js';
 import axios from 'axios';
 import { ActivityIndicator, Avatar } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 //Components
 import PendingTrades from '../components/evan/PendingTrades.js';
 import Bookmarks from '../components/evan/Bookmarks.js';
 import YourItems from '../components/evan/YourItems.js';
 
+
+
 export default function ProfileScreen(props) {
-  const {userData, handleSignOut, isLoading} = React.useContext(Context);
-  console.log('User Data Home', userData);
+  // const isFocused = useIsFocused();
+  const {userData, handleSignOut, isLoading, isReady} = React.useContext(Context);
+  // console.log('Nav?', props.navigation);
+  const {updateNav} = React.useContext(Context);
+  updateNav(props.navigation);
+
 
   if(isLoading || !Object.keys(userData).length) {
     return (
@@ -30,9 +37,18 @@ export default function ProfileScreen(props) {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>User Email is {userData.email} </Text>
+      <View style={styles.logout}>
+      <TouchableOpacity onPress={handleSignOut}>
+      <Ionicons name='log-out-outline' size={40} color='#007AFF'/>
+      </TouchableOpacity>
+      {/* <Button
+        title="Logout"
+        onPress={handleSignOut}
+      /> */}
+      </View>
+      <Text style={styles.hello}>Hello {userData.name}!</Text>
       <View style={styles.avatar}>
-        <Avatar.Image size={200} source={require('../../assets/icon.png')} />
+        <Avatar.Image size={200} source={{url: userData.thumbnail_url}} />
       </View>
       <YourItems />
       <PendingTrades />
@@ -47,15 +63,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: '#fff',
-    backgroundColor: 'yellow',
+    // backgroundColor: 'yellow',
     // alignItems: 'center',
     // justifyContent: 'center',
   },
   avatar: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 60,
+    paddingTop: 30,
     paddingBottom: 40
+  },
+  logout: {
+    alignItems: 'flex-end',
+    paddingTop: 10,
+    paddingRight: 30
+  },
+  hello: {
+    fontSize: 40,
+    textAlign: 'center'
   }
 });
 

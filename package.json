@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "server": "npx nodemon --watch ./server ./server/index.js"
+    "server:dev": "npx nodemon --watch ./server ./server/index.js",
+    "server": "npx node ./server ./server/index.js"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.4",
@@ -29,6 +30,7 @@
     "react-native-dotenv": "^3.4.7",
     "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-paper": "^5.2.0",
+    "react-native-paper-dropdown": "^1.0.7",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0"
   },

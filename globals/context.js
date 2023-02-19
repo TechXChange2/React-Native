@@ -10,14 +10,16 @@ const Context = React.createContext();
 const ContextProvider = ({children}) => {
   const [userData, setUserData] = React.useState({});
   const [userToken, setUserToken] = React.useState('null');
+  const [bookmarksArr, setBookmarksArr] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isReady, setIsReady] = React.useState({yourItems: false, bookmarks: false, trades: false});
+  const [nav, setNav] = React.useState();
 
-  //Google API key: AIzaSyBjVph8imz-Y9y90SWJJG8SrWDviEMgl7w
   //Button Colors: #007AFF
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log('AUTH STATE changed with user:', user);
+      // console.log('AUTH STATE changed with user:', user);
       if(user) {
         console.log('loggin in...')
         setIsLoading(true);
@@ -32,6 +34,11 @@ const ContextProvider = ({children}) => {
     return () => {unsubscribe()}
   }, [])
 
+  const updateNav = (nav) => {
+    setTimeout(() => {
+      setNav(nav)
+    }, 100);
+  }
   const getSetUserData = (email) => {
     return new Promise((resolve, reject) => {
       API.getUserFromEmail(email)
@@ -62,7 +69,13 @@ const ContextProvider = ({children}) => {
     <Context.Provider value={{
       userData,
       handleSignOut,
-      isLoading
+      isLoading,
+      isReady,
+      setIsReady,
+      nav,
+      updateNav,
+      bookmarksArr,
+      setBookmarksArr
       }}>
       {children}
     </Context.Provider>
