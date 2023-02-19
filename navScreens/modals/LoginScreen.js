@@ -16,13 +16,13 @@ export default function LoginScreen({navigation}) {
   const [emailError, setEmailError] = React.useState(false);
   const [passError, setPassError] = React.useState(false);
   const [tooManyRequests, setTooManyRequests] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const {isLoading, setIsLoading} = React.useContext(Context);
 
 
   const handleLogin = () => {
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, email, pass)
     .then(userCredentials => {
-      setIsLoading(false);
       console.log('Success Login (email): ', userCredentials.user.email);
     })
     .catch(err => {

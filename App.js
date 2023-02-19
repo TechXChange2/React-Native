@@ -8,6 +8,11 @@ import {ContextProvider, Context} from './globals/context.js';
 import AuthPage from './navScreens/AuthPage.js';
 import AppPage from './navScreens/AppPage.js';
 
+//Amplify + S3 config for app
+import { Amplify } from 'aws-amplify';
+import awsconfig from "./src/aws-exports.js";
+Amplify.configure(awsconfig);
+
 export default function App() {
   return (
     <ContextProvider>

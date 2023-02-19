@@ -6,7 +6,7 @@ module.exports = {
     const data = req.body;
 
     console.log('create user body:', data);
-    let qString = `INSERT INTO users (name, email, description, thumbnail_url, street, city, state, country) VALUES ("${data.name}", "${data.email}", "${data.description}", "${data.thumbnail_url}", "${data.street}", "${data.city}", "${data.state}", "${data.country}");`;
+    let qString = `INSERT INTO users (name, email, description, imageUri, street, city, state, country) VALUES ("${data.name}", "${data.email}", "${data.description}", "${data.imageUri}", "${data.street}", "${data.city}", "${data.state}", "${data.country}");`;
 
     db.query(qString, function(err, results) {
       if(err) {

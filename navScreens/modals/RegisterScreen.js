@@ -1,17 +1,27 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, ScrollView, Text, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, ScrollView, Text, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import ImagePick from './ImagePick.js';
 //Third Party
+import { useIsFocused } from '@react-navigation/native'
 import { auth } from '../../globals/firebase.js';
+import * as ImagePicker from 'expo-image-picker';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { TextInput } from 'react-native-paper';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { createUser, deleteUser } from '../API.js';
 import { GOOGLE_PLACES_WEB_API } from '@env';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Avatar } from 'react-native-paper';
+
+//Amplidy S3 for image
+import { Amplify, Storage } from 'aws-amplify';
+import awsconfig from "../../src/aws-exports.js";
+Amplify.configure(awsconfig);
 
 
-export default function RegisterScreen() {
+export default function RegisterScreen({navigation, route}) {
+  const isFocused = useIsFocused();
+  const [image, setImage] = React.useState();
 
   const [email, setEmail] = React.useState();
   const [pass, setPass] = React.useState();
@@ -27,40 +37,61 @@ export default function RegisterScreen() {
   const [googleApiKey, dontSetGoogleApiKey] = React.useState(process.env.GOOGLE_PLACES_WEB_API);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleRegister = () => {
-    var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : []
+  const fetchImageFromUri = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return blob;
+  };
+  const uploadImage = (filename, img) => {
+    // Auth.currentCredentials();
+    return Storage.put(filename, img, {
+      level: "public",
+      contentType: "image/jpeg"
+      // progressCallback(progress) {
+        // setLoading(progress);
+      // },
+    })
+      .then((response) => {
+        return response.key;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+  };
+
+  const handleRegister = async () => {
+    var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : [];
+
+    //Upload image (create name for image)
+    const imageUri1 = route.params?.phoneUri;
+    console.log('image uri', imageUri1);
+    const img = await fetchImageFromUri(imageUri1);
+    const imgName = 'email?=' + email + '?-' + (new Date().toISOString()) + '.jpeg'
+    const imageKey = await uploadImage(imgName, img);
+
     var userObj = {
       email,
       name,
       description,
-      thumbnail_url,
+      imageUri: imageKey,
       street,
       city: locationArr[0],
       state: locationArr[1],
-      country: locationArr[2],
+      country: locationArr[2]
     }
-    // console.log('User Obj', userObj);
 
-    createUser(userObj)
-      .then(res => {
-        console.log('Added User to DB', res.data)
-        createUserWithEmailAndPassword(auth, email, pass)
-        .then(res => {
-          console.log('Added User to FB')
-          setIsLoading(false);
-        })
-        .catch(err => {
-          console.log('Error adding user to FB', err);
-          setIsLoading(false);
-        })
-      })
-      .catch(err => {
-        console.log('Couldnt add user to DB..', JSON.stringify(err));
-        setUserExists(true);
-        setIsLoading(false);
-      })
+    try {
+      const user = await createUser(userObj)
+      console.log('Added User to DB', user.data);
+      await createUserWithEmailAndPassword(auth, email, pass);
+      console.log('Added User to FB');
+      setIsLoading(true)
+
+    } catch(e) {
+      console.error('Error ', e)
+    }
   }
-
 
   return (
     <>
@@ -69,7 +100,12 @@ export default function RegisterScreen() {
       style={styles.container}
       keyboardVerticalOffset={keyOffset}
       >
-
+      <Button title="Pick an image from camera roll" onPress={() => navigation.navigate('ImagePick')} />
+      {route.params?.phoneUri && (
+      <View>
+          <Avatar.Image size={80} source={{uri: route.params?.phoneUri}} />
+        </View>
+      )}
       <View style={styles.inputContainer}>
         <Text style={emailInvalid ? styles.error : styles.hide}>email is invalid</Text>
         <Text style={userExists ? styles.error : styles.hide}>email already exists</Text>
@@ -144,7 +180,7 @@ export default function RegisterScreen() {
     {/* REGISTER BUTTON */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-        onPress={() => {setIsLoading(true); handleRegister()}}
+        onPress={() => {setIsLoading(true); handleRegister(route.params.imageBlob1)}}
         style={styles.button}
         >
         {

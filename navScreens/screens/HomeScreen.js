@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {Context} from '../../globals/context.js';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Image, Text, View, ScrollView, TouchableOpacity, Button } from 'react-native';
 import { Link, useIsFocused } from '@react-navigation/native';
 import * as API from '../API.js';
 import axios from 'axios';
@@ -11,44 +11,56 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import PendingTrades from '../components/evan/PendingTrades.js';
 import Bookmarks from '../components/evan/Bookmarks.js';
 import YourItems from '../components/evan/YourItems.js';
-
+//Amplify + S3
+import { Storage } from 'aws-amplify';
 
 
 export default function ProfileScreen(props) {
-  // const isFocused = useIsFocused();
-  const {userData, handleSignOut, isLoading, isReady} = React.useContext(Context);
-  // console.log('Nav?', props.navigation);
-  const {updateNav} = React.useContext(Context);
+  const [image, setImage] = React.useState();
+  const {userData, updateNav, handleSignOut, setIsLoading, isLoading, isReady} = React.useContext(Context);
   updateNav(props.navigation);
 
 
+  const downloadImage = async () => {
+    console.log('isloading?', isLoading);
+    const img = await Storage.get(userData.imageUri);
+    setImage(img);
+  };
+
+React.useEffect(() => {
+  downloadImage();
+  }, [])
+React.useEffect(() => {
+  if(image) {
+    setIsLoading(false);
+  }
+  }, [image])
+
+  //Show Loading
   if(isLoading || !Object.keys(userData).length) {
     return (
-      <View style={styles.container}>
+      <View style={styles.containerLoading}>
         <ActivityIndicator
         animating={true}
-        color='blue'
+        color='#007AFF'
         // color={MD2Colors.red800}
         size='large'
         />
       </View>
     )
   }
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.logout}>
+
       <TouchableOpacity onPress={handleSignOut}>
       <Ionicons name='log-out-outline' size={40} color='#007AFF'/>
       </TouchableOpacity>
-      {/* <Button
-        title="Logout"
-        onPress={handleSignOut}
-      /> */}
+
       </View>
       <Text style={styles.hello}>Hello {userData.name}!</Text>
       <View style={styles.avatar}>
-        <Avatar.Image size={200} source={{url: userData.thumbnail_url}} />
+        <Avatar.Image size={200} source={{uri: image}} />
       </View>
       <YourItems />
       <PendingTrades />
@@ -62,10 +74,11 @@ export default function ProfileScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
-    // backgroundColor: 'yellow',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+  },
+  containerLoading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   avatar: {
     flexDirection: 'row',

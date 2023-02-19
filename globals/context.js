@@ -24,7 +24,7 @@ const ContextProvider = ({children}) => {
         console.log('loggin in...')
         setIsLoading(true);
         getSetUserData(user.email)
-        .then(res => setIsLoading(false))
+        .then(res => console.log('data...'))
         .catch(err => console.log('couldnt getSetUser...'))
       } else {
         console.log('logging out...')
@@ -70,6 +70,7 @@ const ContextProvider = ({children}) => {
       userData,
       handleSignOut,
       isLoading,
+      setIsLoading,
       isReady,
       setIsReady,
       nav,

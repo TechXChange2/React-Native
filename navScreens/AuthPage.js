@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //Screens
 import LoginScreen from './modals/LoginScreen.js';
 import RegisterScreen from './modals/RegisterScreen.js';
+import ImagePick from './modals/ImagePick.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,8 @@ export default function AuthPage({route}) {
       >
         <Stack.Screen name='LoginScreen' options={{title: 'Login'}} component={LoginScreen}/>
         <Stack.Screen name='RegisterScreen' options={{title: 'Register'}}component={RegisterScreen}/>
+        <Stack.Screen name='ImagePick' options={{title: 'Pick an Image', gestureEnabled: false, headerBackVisible: false}}
+ component={ImagePick}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
