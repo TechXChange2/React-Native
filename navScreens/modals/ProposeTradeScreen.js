@@ -6,7 +6,6 @@ import { StyleSheet, Text, View, Image, Button, TouchableOpacity } from 'react-n
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { Avatar } from 'react-native-paper';
 
 
@@ -18,7 +17,6 @@ export default function ProposeTradeScreen({route, navigation}) {
   const [selectedDeviceURL, setSelectedDeviceURL] = useState('');
 
   useEffect(() => {
-  //  console.log('USERDATA.id: ', userData.id)
     API.getItemsFromUserID(userData.id)
     .then((response) => {
       setUserDevices(response.data)
@@ -30,9 +28,7 @@ export default function ProposeTradeScreen({route, navigation}) {
 
   const setDevice = (e, id) => {
    e.preventDefault();
-   // console.log('KEY: ', e.key);
    setSelectedUserDevice(id);
-   console.log('DEX: ', id)
   }
 
   const onSubmitProposal = (e) => {
@@ -50,7 +46,6 @@ export default function ProposeTradeScreen({route, navigation}) {
   useEffect(() => {
     API.getItemFromID(selectedUserDevice)
       .then((response) => {
-        console.log('THUMBNAIL: ', response.data[0].thumbnail_url)
         setSelectedDeviceURL(response.data[0].thumbnail_url);
       }).catch((error) => {
         console.log(error);
@@ -58,7 +53,6 @@ export default function ProposeTradeScreen({route, navigation}) {
   }, [selectedUserDevice]);
 
   const deviceMap = userDevices.map((device, index) => {
-    console.log(device);
     return (
       <TouchableOpacity
       style={styles.selectableDevice}
@@ -73,20 +67,14 @@ export default function ProposeTradeScreen({route, navigation}) {
 
   return (
     <View style={styles.container}>
-      {/* <View>
-
-      </View> */}
-
       <View style={styles.selectedDeviceInfo}>
         <Text style={styles.selectableDevices}>Select a device to trade:</Text>
         <View  style={styles.selectedDevice}>
           {deviceMap}
         </View>
       </View>
-
       <View style={styles.proposalInfo}>
         <Text style={styles.headerText}>Proposal:</Text>
-
         <View style={styles.theSwap}>
           <View style={[{ aspectRatio: 1 }], [styles.imgBox, styles.imgBoxLeft]}>
             <View style={styles.yourPic}>
@@ -104,9 +92,6 @@ export default function ProposeTradeScreen({route, navigation}) {
             <Image resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} source={{url: itemInfo.thumbnail_url}}/>
           </View>
         </View>
-
-
-        {/* <Avatar.Image size={200} source={{url: itemInfo.thumbnail_url}} /> */}
       </View>
       <View style={styles.buttonStyle} >
         <Button title="Propose Trade" onPress={(e) => {onSubmitProposal(e)}} color={'#fff'}></Button>
@@ -136,11 +121,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginRight: 15,
-
   },
   selectableDevices: {
-    //paddingLeft: 20,
     fontSize: 24,
     width: '100%',
     flexDirection: 'row',
@@ -155,7 +137,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     paddingBottom: 5,
     paddingTop: 20
-    // maxWidth: 375
   },
   selectedDeviceInfo: {
     minHeight: 150,
@@ -165,7 +146,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 20,
     paddingBottom: 5
-    // maxWidth: 375
   },
   headerText: {
     fontSize: 24,
@@ -179,7 +159,6 @@ const styles = StyleSheet.create({
     marginLeft: -20
   },
   imgBox: {
-    // backgroundColor: 'blue',
     position: 'relative',
     overflow: 'hidden',
     paddingVertical: 30,

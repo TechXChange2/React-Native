@@ -3,8 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, ScrollView, View, Image, Button, TouchableOpacity } from 'react-native';
 import * as API from '../API.js';
 import {Context} from '../../globals/context.js';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
@@ -19,7 +17,6 @@ export default function ItemDetailsScreen({route, navigation}) {
 
 
  useEffect(() => {
-  console.log('mounting......');
   if(bookmarksArr.includes(itemId)) {
     setAlreadyBookmarked(true);
   }
@@ -43,7 +40,6 @@ useEffect(() => {
 }, [itemInfo]);
 
 const onAddButtonClick = (e) => {
-  console.log('add bookmark clicked');
   setAlreadyBookmarked(true);
   e.preventDefault();
   const bookmarkObj = {
@@ -70,17 +66,13 @@ const resetBookmarksReady = () => {
       <TouchableOpacity
       style={styles.addBookmark}
       onPress={(e) => {resetBookmarksReady(); onAddButtonClick(e)}}
-      disabled={alreadyBookmarked ? true : false}
-      >
+      disabled={alreadyBookmarked ? true : false}>
         <Ionicons name='bookmarks-outline' size={40} color={alreadyBookmarked ? 'grey' : '#007AFF'}/>
-      </TouchableOpacity>
-      )}
+      </TouchableOpacity>)}
       <Text style={styles.itemName}>{itemInfo.name}</Text>
       <View style={styles.avatar}>
         <Avatar.Image size={200} source={{url: itemInfo.thumbnail_url}} />
       </View>
-
-
       <View style={styles.currentOwnerInfo}>
         <Text style={styles.headerText}>Current Owner</Text>
         <View style={styles.currentOwnerInfoBody}>
@@ -103,9 +95,7 @@ const resetBookmarksReady = () => {
           </View>
         </View>
       </View>
-
       <View style={styles.itemDetailsInfo} size={20} >
-        {/* <Text style={styles.headerText}>Description</Text> */}
         <View style={styles.itemDetailsInfoBody}>
           <View style={styles.inlineStyleDescription}>
             <Ionicons name="list-outline" size={20}/>
@@ -117,15 +107,11 @@ const resetBookmarksReady = () => {
           </View>
         </View>
       </View>
-
       <View style={styles.buttonStyle}>
         <Button title="Propose Trade" onPress={() => navigation.navigate('ProposeTradeScreen', { itemInfo: itemInfo, sellerData: sellerData }) } color={'#fff'}></Button>
       </View>
-
     </ScrollView>
-  )
-
-);
+  ));
 }
 
 const styles = StyleSheet.create({
@@ -158,7 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 20,
     paddingBottom: 5
-    // maxWidth: 375
   },
   currentOwnerInfoBody: {
     display: 'flex',
@@ -217,13 +202,11 @@ const styles = StyleSheet.create({
   detailText: {
     marginLeft: 10,
     fontSize: 18
-   // marginTop: 15
   },
   detailText1: {
     flex: 1,
     marginLeft: 10,
     fontSize: 18,
-   // marginTop: 15
   },
   buttonStyle: {
     backgroundColor: '#007AFF',
