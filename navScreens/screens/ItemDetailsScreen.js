@@ -33,12 +33,9 @@ export default function ItemDetailsScreen({route, navigation}) {
 
 useEffect(() => {
   if (itemInfo) {
-    // console.log('item info', itemInfo);
-  API.getUserFromId(itemInfo.user_id)
+ API.getUserFromId(itemInfo.user_id)
     .then((response) => {
-      // console.log('res in get user from id', response.data[0]);
       setSellerData(response.data[0]);
-
     }).catch((error) => {
       console.log(error);
     });
@@ -122,7 +119,7 @@ const resetBookmarksReady = () => {
       </View>
 
       <View style={styles.buttonStyle}>
-        <Button title="Propose Trade" onPress={() => navigation.navigate('ProposeTradeScreen', { itemInfo: itemInfo }) } ></Button>
+        <Button title="Propose Trade" onPress={() => navigation.navigate('ProposeTradeScreen', { itemInfo: itemInfo, sellerData: sellerData }) } color={'#fff'}></Button>
       </View>
 
     </ScrollView>
@@ -135,17 +132,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   avatar: {
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingTop: 10,
+    paddingBottom: 5
   },
   itemName: {
     fontSize: 40,
     textAlign: 'center',
-    marginTop: -20,
-    marginBottom: 10
+    marginTop: 0
   },
   addBookmark: {
     width: '90%',
@@ -154,13 +151,13 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   currentOwnerInfo: {
-    minHeight: 190,
+    maxHeight: 200,
     backgroundColor: 'rgb(211, 240, 245)',
     paddingLeft: 20,
     width: '100%',
     fontSize: 24,
     marginTop: 20,
-    paddingBottom: 20
+    paddingBottom: 5
     // maxWidth: 375
   },
   currentOwnerInfoBody: {
@@ -169,14 +166,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
     marginLeft: -30,
-    fontSize: 20
+    fontSize: 20,
+    marginBottom: 10
   },
   itemDetailsInfo: {
     minHeight: 150,
     paddingLeft: 20,
     width: '100%',
     fontSize: 24,
-    marginBottom: -30
+    marginBottom: -40
   },
   itemDetailsInfoBody: {
     display: 'flex',
@@ -184,7 +182,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     marginTop: 5,
-    marginBottom: 10,
     marginLeft: 10,
     fontSize: 20,
     width: '80%'
@@ -208,7 +205,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: 5,
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   inlineStyleDescription: {
     display: 'flex',
@@ -219,7 +216,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     marginLeft: 10,
-    fontSize: 18,
+    fontSize: 18
    // marginTop: 15
   },
   detailText1: {
@@ -229,12 +226,13 @@ const styles = StyleSheet.create({
    // marginTop: 15
   },
   buttonStyle: {
-    borderColor: '#1f96f3',
-    // backgroundColor: '#1f96f3',
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
     borderWidth: 2.5,
     width: '85%',
     borderRadius: 10,
-    marginBottom: 20
+    position: 'absolute',
+    bottom: 40
   }
 
 });
