@@ -67,4 +67,21 @@ module.exports = {
       res.status(200).send(results);
     });
   },
+
+  getUserByID: async (req, res) => {
+
+    const userId = req.query.id;
+    console.log(userId)
+    const qString = `SELECT * FROM users WHERE id = '${userId}';`;
+
+    db.query(qString, function (err, results) {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+        return;
+      }
+      // console.log('promise style results\n', results);
+      res.status(200).send(results);
+    });
+  },
 };

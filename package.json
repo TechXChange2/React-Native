@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "server": "npx nodemon --watch ./server ./server/index.js"
+    "server:dev": "npx nodemon --watch ./server ./server/index.js",
+    "server": "npx node ./server ./server/index.js"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.4",

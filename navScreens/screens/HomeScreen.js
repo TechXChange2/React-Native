@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import {Context} from '../../globals/context.js';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button } from 'react-native';
-import { Link } from '@react-navigation/native';
+import { Link, useIsFocused } from '@react-navigation/native';
 import * as API from '../API.js';
 import axios from 'axios';
 import { ActivityIndicator, Avatar } from 'react-native-paper';
@@ -15,10 +15,12 @@ import YourItems from '../components/evan/YourItems.js';
 
 
 export default function ProfileScreen(props) {
-  const {userData, handleSignOut, isLoading} = React.useContext(Context);
+  // const isFocused = useIsFocused();
+  const {userData, handleSignOut, isLoading, isReady} = React.useContext(Context);
   // console.log('Nav?', props.navigation);
   const {updateNav} = React.useContext(Context);
   updateNav(props.navigation);
+
 
   if(isLoading || !Object.keys(userData).length) {
     return (
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: 30,
-    paddingBottom: 20
+    paddingBottom: 40
   },
   logout: {
     alignItems: 'flex-end',

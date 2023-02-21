@@ -1,17 +1,21 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { useIsFocused } from '@react-navigation/native'
 import { Context } from '../../../globals/context.js';
-import * as API from '../../API.js';
+import { getAllInvolvedTrades } from '../../API.js';
 import { Switch } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Trade from './Trade.js';
+import NoItems from './NoItems.js'
+
 
 
 const PendingTrades = () => {
-  const {userData} = React.useContext(Context);
+  const {userData, isReady, setIsReady} = React.useContext(Context);
 //your trades, your offers,
 
 
+const [firstMount, setFirstMount] = React.useState(true);
 const [yourTrades, setYourTrades] = React.useState([]);
 const [yourOffers, setYourOffers] = React.useState([]);
 // const [shownTrades, setShownTrades] = React.useState([]);
@@ -20,18 +24,13 @@ const [typeHTML, setTypeHTML] = React.useState('Showing Your Trades');
 const [noTradeView, setNoTradeView] = React.useState({display: 'none'});
 const [initialLoad, setInitialLoad] = React.useState(false);
 const [switchVal, setSwitchVal] = React.useState(true);
-
-React.useEffect(() => { //sets Trades
-  if(userData.id) {
-    getSetTrades();
-  }
-}, [])
+const isFocused = useIsFocused();
 
 const getSetTrades = () => {
-  console.log('getset called');
-API.getAllInvolvedTrades(userData.id)
+  // console.log('getset called');
+getAllInvolvedTrades(userData.id)
 .then(res => {
-  // console.log('res from getAllInvolvedTrades', res);
+  // console.log('Your Trades fired');
   var tempTrades = [];
   var tempOffers = [];
   var errTrades = [];
@@ -57,6 +56,26 @@ API.getAllInvolvedTrades(userData.id)
 })
 };
 
+React.useEffect(() => { //sets Trades
+  if(userData.id) {
+    getSetTrades();
+  }
+  setFirstMount(false);
+}, [])
+
+
+if(isFocused && isReady.trades && !firstMount) {
+  //getSet your trades
+  if(userData.id) {
+    console.log('isFocused Trades CALLED');
+    getSetTrades();
+  }
+
+  let readyObj = isReady;
+  readyObj.trades = false;
+  setIsReady(readyObj);
+}
+
 React.useEffect(() => { //Set Text
   var typeText = currentType === 'trade' ? 'Showing Your Trades' : 'Showing Your Offers';
   setTypeHTML(typeText);
@@ -68,7 +87,11 @@ const toggleTrade = () => { //Set Type
 }
 
 
-  return (
+if(!yourTrades.length && !yourOffers.length) {
+  return <NoItems textHeader='Your Trades' text='trades'/>
+}
+
+return (
 
     <View style={styles.container}>
       <View style={styles.header}>
@@ -107,6 +130,7 @@ export default PendingTrades
 
 const styles = StyleSheet.create({
   container: {
+    minHeight: 150
     // flex: 1,
     // backgroundColor: 'lightblue',
     // height: 200,

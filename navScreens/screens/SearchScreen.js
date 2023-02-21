@@ -15,7 +15,11 @@ export default function SearchScreen({ route }) {
 
 
   return (
+<<<<<<< HEAD
     <View style={{ marginHorizontal: 25 }}>
+=======
+    <View style={styles.container}>
+>>>>>>> main
       <Text>Filter Items</Text>
       <StatusBar style="auto" />
       <Filter />
@@ -26,8 +30,10 @@ export default function SearchScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 30
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });

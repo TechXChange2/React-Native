@@ -153,9 +153,46 @@ export function getTradeFromID(tradeID) {
     })
   })//end Promise
 }
+export function getBookmarksFromUserId(userId) {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/bookmarks/${userId}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
 export function getAllUsers() {
   return new Promise((resolve,reject) => {
     axiosCall('get', `/users/all`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+
+// export function getUserFromID(userID) {
+//   console.log(userID);
+//   return new Promise((resolve,reject) => {
+//     axiosCall('get', `/users/userInfo?id=${userID}`)
+//     .then(res => {
+//       resolve(res);
+//     })
+//     .catch(err => {
+//       reject(err);
+//     })
+//   })//end Promise
+// }
+
+export function addBookmark(bookmarkObj) {
+console.log(bookmarkObj)
+  return new Promise((resolve,reject) => {
+    axiosCall('post', `/bookmark`, bookmarkObj)
     .then(res => {
       resolve(res);
     })
