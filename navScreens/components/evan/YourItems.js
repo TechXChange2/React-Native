@@ -13,7 +13,7 @@ const YourItems = () => {
   React.useEffect(() => {
     getItemsFromUserID(userData.id)
     .then(res => {
-      // console.log('Items: ', res.data)
+      console.log(Context)
       setItemList(res.data);
     })
     .catch(err => {
