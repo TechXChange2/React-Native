@@ -15,12 +15,8 @@ export default function SearchScreen({ route }) {
 
 
   return (
-<<<<<<< HEAD
-    <View style={{ marginHorizontal: 25 }}>
-=======
     <View style={styles.container}>
->>>>>>> main
-      <Text>Filter Items</Text>
+      <Text>Filters</Text>
       <StatusBar style="auto" />
       <Filter />
     </View>

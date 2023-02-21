@@ -18,11 +18,7 @@ const YourItems = () => {
   function getSetItems() {
     getItemsFromUserID(userData.id)
     .then(res => {
-<<<<<<< HEAD
-      console.log(Context)
-=======
       // console.log('Your Items: ', res.data)
->>>>>>> main
       setItemList(res.data);
     })
     .catch(err => {
