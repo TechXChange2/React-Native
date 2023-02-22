@@ -14,9 +14,10 @@ import { GOOGLE_PLACES_WEB_API } from '@env';
 import { ActivityIndicator, Avatar } from 'react-native-paper';
 
 //Amplidy S3 for image
-import { Amplify, Storage } from 'aws-amplify';
-import awsconfig from "../../src/aws-exports.js";
-Amplify.configure(awsconfig);
+import { Amplify, Storage, Auth } from 'aws-amplify';
+// import awsconfig from "../../src/aws-exports.js";
+// // import Auth from "@aws-amplify/auth";
+// Amplify.configure(awsconfig);
 
 
 export default function RegisterScreen({navigation, route}) {
@@ -40,11 +41,12 @@ export default function RegisterScreen({navigation, route}) {
   const fetchImageFromUri = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
+    console.log('blob?:', blob instanceof Blob);
     return blob;
   };
-  const uploadImage = (filename, img) => {
+  const uploadImage = (filename, img2) => {
     // Auth.currentCredentials();
-    return Storage.put(filename, img, {
+    return Storage.put(filename, img2, {
       level: "public",
       contentType: "image/jpeg"
       // progressCallback(progress) {
@@ -55,19 +57,23 @@ export default function RegisterScreen({navigation, route}) {
         return response.key;
       })
       .catch((error) => {
-        console.log(error);
+        console.log('UploadImg Error: ', error);
         return error.response;
       });
   };
 
   const handleRegister = async () => {
-    var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : [];
+    // var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : [];
+    var locationArr = [];
 
     //Upload image (create name for image)
     const imageUri1 = route.params?.phoneUri;
     console.log('image uri', imageUri1);
+    // return;
     const img = await fetchImageFromUri(imageUri1);
-    const imgName = 'email?=' + email + '?-' + (new Date().toISOString()) + '.jpeg'
+    const imgName = 'email?=' + email + '?-' + (new Date().toISOString()) + '.jpeg';
+    console.log('name:', imgName);
+    console.log('blob?:', img instanceof Blob);
     const imageKey = await uploadImage(imgName, img);
 
     var userObj = {
@@ -80,7 +86,8 @@ export default function RegisterScreen({navigation, route}) {
       state: locationArr[1],
       country: locationArr[2]
     }
-
+    console.log('USER SignUp: ', userObj);
+    return;
     try {
       const user = await createUser(userObj)
       console.log('Added User to DB', user.data);
@@ -180,7 +187,7 @@ export default function RegisterScreen({navigation, route}) {
     {/* REGISTER BUTTON */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-        onPress={() => {setIsLoading(true); handleRegister(route.params.imageBlob1)}}
+        onPress={() => {setIsLoading(true); handleRegister()}}
         style={styles.button}
         >
         {

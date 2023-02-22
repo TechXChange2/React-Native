@@ -15,7 +15,7 @@ Amplify.configure(awsconfig);
 
 export default function ImagePick1({navigation}) {
   const [phoneUri, setPhoneUri] = useState(null);
-  const [afterSelection, setAfterSelection] = useState(false);
+  // const [afterSelection, setAfterSelection] = useState(false);
 
   //GET OS PERMISSIONS
   useEffect(() => {
@@ -62,8 +62,9 @@ export default function ImagePick1({navigation}) {
         alert("Upload cancelled");
         return;
       } else {
+        // console.log('phone uri: ', pickedImage.assets[0].uri)
         setPhoneUri(pickedImage.assets[0].uri);
-        setAfterSelection(true);
+        // setAfterSelection(true);
       }
     } catch (e) {
       console.log(e);
@@ -81,7 +82,7 @@ export default function ImagePick1({navigation}) {
         </View>
       )}
       <View style={styles.buttons}>
-      { afterSelection ? (
+      { phoneUri ? (
         <Button onPress={() => navigation.navigate('RegisterScreen', {phoneUri})} title="Return to Register with Image" />
       ) : (
         <>

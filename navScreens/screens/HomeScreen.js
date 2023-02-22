@@ -13,6 +13,8 @@ import Bookmarks from '../components/evan/Bookmarks.js';
 import YourItems from '../components/evan/YourItems.js';
 //Amplify + S3
 import { Storage } from 'aws-amplify';
+import Auth from "@aws-amplify/auth";
+
 
 
 export default function ProfileScreen(props) {
@@ -23,6 +25,7 @@ export default function ProfileScreen(props) {
 
   const downloadImage = async () => {
     console.log('isloading?', isLoading);
+    Auth.currentCredentials();
     const img = await Storage.get(userData.imageUri);
     setImage(img);
   };
@@ -40,6 +43,11 @@ export default function ProfileScreen(props) {
   if(isLoading || !Object.keys(userData).length) {
     return (
       <View style={styles.containerLoading}>
+        <View style={styles.logout}>
+          <TouchableOpacity onPress={handleSignOut}>
+          <Ionicons name='log-out-outline' size={40} color='#007AFF'/>
+          </TouchableOpacity>
+        </View>
         <ActivityIndicator
         animating={true}
         color='#007AFF'

@@ -6,12 +6,14 @@ Amplify is Amazon's full stack project manager. It will make it easier to add an
 
 1. Run `npm install -g @aws-amplify/cli` to install Amplify CLI
 2. Run `amplify configure` (will prompt you to create an AWS iam user in the browswer)
-2. Run `amplify init` to initilise a new Amplify project in your app
+  - sign into aws account in browser
+  - once signed in, return to terminal and press enter to finish config
+3. Run `amplify init` to initilise a new Amplify project in your app
   - choose profile to connect to the iam User you just made
   - an amplify folder in your project will appear
-3. Run `amplify add storage` (make sure to setup with Auth)
-3. Run `amplify push` to deploy the Storage and Auth resources in Aws Amplify project
-4. Put the following configuration in your App's root file:
+4. Run `amplify add storage` (make sure to setup with Auth)
+5. Run `amplify push` to deploy the Storage and Auth resources in Aws Amplify project
+6. Put the following configuration in your App's root file:
 
 ###### Amplify + S3 config for app
 
