@@ -11,8 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import PendingTrades from '../components/evan/PendingTrades.js';
 import Bookmarks from '../components/evan/Bookmarks.js';
 import YourItems from '../components/evan/YourItems.js';
-//Amplify + S3
-import { Storage, Auth } from 'aws-amplify';
+import s3 from '../../globals/s3Utils.js';
 
 
 
@@ -24,10 +23,8 @@ export default function ProfileScreen(props) {
 
   const downloadImage = async () => {
     console.log('isloading?', isLoading);
-    Auth.currentCredentials();
-    const img = await Storage.get(userData.imageUri);
-    // console.log('img', img);
-    setImage(img);
+    const profilePic = await s3.downloadImage(userData.imageUri);
+    setImage(profilePic);
   };
 
   React.useEffect(() => {
