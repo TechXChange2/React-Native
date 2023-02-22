@@ -6,14 +6,17 @@ import {Context} from '../../globals/context.js';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
+import s3 from '../../globals/s3Utils.js';
 
 
 export default function ItemDetailsScreen({route, navigation}) {
   const itemId = route.params.itemID;
+  const isYours = route.params?.isYours;
   const {userData, isReady, setIsReady, bookmarksArr} = React.useContext(Context);
   const [itemInfo, setItemInfo] = useState({});
   const [sellerData, setSellerData] = React.useState();
   const [alreadyBookmarked, setAlreadyBookmarked] = React.useState();
+  const [itemImage, setItemImage] = React.useState();
 
 
  useEffect(() => {
@@ -28,6 +31,17 @@ export default function ItemDetailsScreen({route, navigation}) {
     });
 }, []);
 
+const setTheImage = async () => {
+  console.log('img url: ', itemInfo.thumbnail_url)
+   //Set the image based on data
+   if(itemInfo.thumbnail_url.indexOf('http') !== -1) {
+    setItemImage(itemInfo.thumbnail_url);
+  } else {
+    const itemPic = await s3.downloadImage(itemInfo.thumbnail_url);
+    setItemImage(itemPic);
+  }
+}
+
 useEffect(() => {
   if (itemInfo) {
  API.getUserFromId(itemInfo.user_id)
@@ -36,6 +50,9 @@ useEffect(() => {
     }).catch((error) => {
       console.log(error);
     });
+    if(itemInfo.thumbnail_url) {
+      setTheImage();
+    }
   }
 }, [itemInfo]);
 
@@ -73,7 +90,7 @@ const resetBookmarksReady = () => {
       )}
       <Text style={styles.itemName}>{itemInfo.name}</Text>
       <View style={styles.avatar}>
-        <Avatar.Image size={200} source={{url: itemInfo.thumbnail_url}} />
+        <Avatar.Image size={200} source={{uri: itemImage}} />
       </View>
       <View style={styles.currentOwnerInfo}>
         <Text style={styles.headerText}>Current Owner</Text>
@@ -109,9 +126,11 @@ const resetBookmarksReady = () => {
           </View>
         </View>
       </View>
+      {!isYours && (
       <View style={styles.buttonStyle}>
         <Button title="Propose Trade" onPress={() => navigation.navigate('ProposeTradeScreen', { itemInfo: itemInfo, sellerData: sellerData }) } color={'#fff'}></Button>
       </View>
+      )}
     </ScrollView>
   ));
 }
