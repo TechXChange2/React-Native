@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: 30,
-    paddingBottom: 40
+    paddingBottom: 10
   },
   logout: {
     alignItems: 'flex-end',

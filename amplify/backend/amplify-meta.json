@@ -1,0 +1,73 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-techxchangern-dev-143850-authRole",
+      "UnauthRoleArn": "arn:aws:iam::876507113541:role/amplify-techxchangern-dev-143850-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::876507113541:role/amplify-techxchangern-dev-143850-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-techxchangern-dev-143850-deployment",
+      "UnauthRoleName": "amplify-techxchangern-dev-143850-unauthRole",
+      "StackName": "amplify-techxchangern-dev-143850",
+      "StackId": "arn:aws:cloudformation:us-west-2:876507113541:stack/amplify-techxchangern-dev-143850/2eea2530-b0a6-11ed-861e-0a1a6509db8f",
+      "AmplifyAppId": "d1na489v45xqon"
+    }
+  },
+  "auth": {
+    "techxchangern2f1adae7": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-techxchangern-dev-143850-deployment/amplify-cfn-templates/auth/techxchangern2f1adae7-cloudformation-template.json",
+        "logicalId": "authtechxchangern2f1adae7"
+      },
+      "lastPushTimeStamp": "2023-02-19T22:46:18.595Z",
+      "output": {
+        "UserPoolId": "us-west-2_dn8yFcytr",
+        "AppClientIDWeb": "6sm43dd4i1hkaveh9abe5d3dec",
+        "AppClientID": "3b4c1pijmv043o25nvjounq4uu",
+        "IdentityPoolId": "us-west-2:7b4ffe13-5eb7-4d03-9f1b-e21f4f8a53ac",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-2:876507113541:userpool/us-west-2_dn8yFcytr",
+        "IdentityPoolName": "techxchangern2f1adae7_identitypool_2f1adae7__dev",
+        "UserPoolName": "techxchangern2f1adae7_userpool_2f1adae7"
+      },
+      "lastPushDirHash": "6qjwEqj9GlWHZMzy1jZ5FlCh6oM="
+    }
+  },
+  "storage": {
+    "s3techxreactnative": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "lastPushTimeStamp": "2023-02-19T22:46:18.595Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-techxchangern-dev-143850-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3techxreactnative"
+      },
+      "output": {
+        "BucketName": "s3techxreactnative-02192023143850-dev",
+        "Region": "us-west-2"
+      },
+      "lastPushDirHash": "1uFyFf3McgMw8blw1BIAQIIGN+Q="
+    }
+  }
+}

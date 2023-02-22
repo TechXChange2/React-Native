@@ -4,18 +4,22 @@ import DropDown from "react-native-paper-dropdown";
 import React from 'react';
 import { useState } from 'react';
 import Filter from '../components/arie/Filter.js';
+import ItemCard from '../components/arie/ItemCard.js';
+import Item from '../components/evan/Item.js';
+import { getAllDevices } from '../API.js';
 
 export default function SearchScreen({ route }) {
   const params = route.params;
 
+
+
+
   return (
     <View style={styles.container}>
-      <Text>Filter Items</Text>
+      <Text>Filters</Text>
       <StatusBar style="auto" />
       <Filter />
     </View>
-
-
   );
 }
 
