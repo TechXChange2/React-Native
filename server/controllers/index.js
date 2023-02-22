@@ -9,10 +9,10 @@ module.exports.Map = require('./Map');
 module.exports.Shared = {
   insertDevice: function (req, res) {
     const userID = req.params.userID;
-    console.log('user id in models ', req.params.userID, req.body.name, req.body.thumbnail_url, req.body.item_condition);
-    const qString = `INSERT INTO devices (user_id, name, thumbnail_url, description, item_condition) VALUES (${userID}, '${req.body.name}', '${req.body.thumbnail_url}', '${req.body.description}', '${req.body.item_condition}');`;
+    // console.log('user id in models ', req.params.userID, req.body.name, req.body.thumbnail_url, req.body.item_condition);
+    const qString = `INSERT INTO devices (user_id, name, thumbnail_url, description, item_condition) VALUES (${userID}, "${req.body.name}", "${req.body.thumbnail_url}", "${req.body.description}", "${req.body.item_condition}");`;
 
-    console.log('QString\n', qString);
+    // console.log('QString\n', qString);
 
     db.query(qString, function (err, results) {
       if (err) {
@@ -21,7 +21,7 @@ module.exports.Shared = {
         return;
       }
       // console.log('promise style results\n', results);
-      res.status(201).send('successfully inserted?');
+      res.status(201).send('successfully inserted');
     });
   },
 
@@ -38,15 +38,7 @@ module.exports.Shared = {
       // console.log('promise style results\n', results);
       res.status(200).send(results);
     });
-    // try {
-    //   const connection = await db.pool.getConnection();
-    //   const results = await connection.query(qString);
-    //   const [[sendBack]] = results;
-    //   res.status(200).json(sendBack);
-    // } catch (error) {
-    //   console.log(error);
-    //   res.status(500).send('error:', error)
-    // }
+
   },
   getItemsFromUserID: async function (req, res) {
     const userID = req.params.userID;
