@@ -62,13 +62,15 @@ const resetBookmarksReady = () => {
 
   return ( sellerData && (
     <ScrollView contentContainerStyle={styles.container}>
-      {userData.id !== sellerData.id && (
+      {userData.id !== sellerData.id ? (
       <TouchableOpacity
       style={styles.addBookmark}
       onPress={(e) => {resetBookmarksReady(); onAddButtonClick(e)}}
       disabled={alreadyBookmarked ? true : false}>
         <Ionicons name='bookmarks-outline' size={40} color={alreadyBookmarked ? 'grey' : '#007AFF'}/>
-      </TouchableOpacity>)}
+      </TouchableOpacity>) : (
+        <View style={styles.marginOnTop}></View>
+      )}
       <Text style={styles.itemName}>{itemInfo.name}</Text>
       <View style={styles.avatar}>
         <Avatar.Image size={200} source={{url: itemInfo.thumbnail_url}} />
@@ -118,6 +120,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+  },
+  marginOnTop: {
+    height: 40
   },
   avatar: {
     flexDirection: 'row',
