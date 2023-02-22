@@ -8,7 +8,7 @@ function getAllDevices(req, res) {
       console.log('err in getDevices controller is ', err);
       res.status(404).send(err);
     } else {
-      console.log('success in bookmarks post ', result);
+      console.log('success in getAllDevices controller: ', result);
       res.status(200).send(result);
     }
   });

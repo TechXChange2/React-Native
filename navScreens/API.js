@@ -222,3 +222,14 @@ export function updateTradeFromID(tradeID, currentTradeStatus, isTerminate) {
   })//end Promise
 }
 
+export function getAllDevices() {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/devices`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
