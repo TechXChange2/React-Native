@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Button, Text, View, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Avatar } from 'react-native-paper';
 import * as API from '../API';
 import {Context} from '../../globals/context.js'
 import { useIsFocused } from '@react-navigation/native';
@@ -43,6 +43,11 @@ export default function AddItemScreen({navigation, route}) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
+      {route.params?.phoneUri && (
+        <View style={styles.avatar}>
+          <Avatar.Image size={100} source={{uri: route.params?.phoneUri}} />
+        </View>
+      )}
       <Button title="Add an Image" onPress={() => navigation.navigate('ImagePick', {fromPage: 'additem'})} />
       <TextInput
       style={styles.input}
@@ -83,6 +88,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     // backgroundColor: 'lightblue',
     width: '80%'
+  },
+  avatar: {
+    alignItems: 'center',
+    // backgroundColor: 'blue'
   },
   buttonStyle: {
     borderColor: '#007AFF',
