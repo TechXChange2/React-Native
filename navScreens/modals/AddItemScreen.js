@@ -9,7 +9,7 @@ import s3 from '../../globals/s3Utils.js';
 
 
 
-export default function AddItemScreen({user}) {
+export default function AddItemScreen({navigation, route}) {
   const isFocused = useIsFocused();
   const {userData, isReady, setIsReady} = React.useContext(Context);
   const [itemName, setItemName] = React.useState('');
@@ -43,7 +43,7 @@ export default function AddItemScreen({user}) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-      <Button title="Pick an image from camera roll" onPress={() => navigation.navigate('ImagePick', {fromPage: 'additem'})} />
+      <Button title="Add an Image" onPress={() => navigation.navigate('ImagePick', {fromPage: 'additem'})} />
       <TextInput
       style={styles.input}
       placeholder="Item Name"

@@ -18,6 +18,7 @@ export default function ImagePick1({navigation, route}) {
   const fromPage = route.params.fromPage;
   const goToPage = fromPage === 'register' ? 'RegisterScreen' : 'AddItem';
   const btnText = fromPage === 'register' ? 'Register' : 'Add Item Form';
+  const titleText = fromPage === 'register' ? 'Your Profile Pic' : 'Item Picture';
   // const [afterSelection, setAfterSelection] = useState(false);
 
   //GET OS PERMISSIONS
@@ -77,7 +78,7 @@ export default function ImagePick1({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Your Profile Picture</Text>
+      <Text style={styles.title}>{titleText}</Text>
 
       {phoneUri && (
         <View>

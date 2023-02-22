@@ -3,13 +3,27 @@ import React from 'react'
 import { Avatar } from 'react-native-paper'
 import { Context } from '../../../globals/context.js'
 import { getUserFromId } from '../../API.js'
+import s3 from '../../../globals/s3Utils.js';
 
 const Item = ({item, isYours}) => {
   const {nav} = React.useContext(Context);
   const [soldBy, setSoldBy] = React.useState();
   const [ownerData, setOwnerData] = React.useState();
+  const [image, setImage] = React.useState();
 
   React.useEffect(() => {
+    //for ALL items, we have to download the image from the thumbnail_url first
+    if(item.thumbnail_url.indexOf('http') !== -1) {
+      setImage(item.thumbnail_url);
+    } else {
+      s3.downloadImage(item.thumbnail_url)
+    .then(res => {
+      // console.log('img uri:', res);
+      setImage(res)
+    })
+    .catch(e => console.error(e))
+    }
+    //for bookmarks, we also need the owner information
     if(!isYours) {
       getUserFromId(item.user_id)
       .then(res => {
@@ -25,7 +39,7 @@ const Item = ({item, isYours}) => {
     <View style={styles.container}>
       <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: item.id})} style={styles.avatar}>
     {/* <Avatar.Image size={100} source={require('../../../assets/icon.png')} /> */}
-        <Avatar.Image size={100} source={{ url: item.thumbnail_url}} />
+        <Avatar.Image size={100} source={{ uri: image}} />
       </TouchableOpacity>
       <View style={styles.info}>
         <View style={styles.title}>

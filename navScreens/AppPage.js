@@ -19,6 +19,8 @@ import AddItemScreen from './modals/AddItemScreen.js';
 import ProposeTradeScreen from './modals/ProposeTradeScreen.js';
 import ItemDetailsScreen from './screens/ItemDetailsScreen.js';
 import AuthPage from './AuthPage.js';
+import ImagePick from './modals/ImagePick.js';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -65,6 +67,7 @@ export default function AppPage() {
         <Stack.Screen name="AddItem" component={AddItemScreen} options={{title: 'Add Item'}}/>
         <Stack.Screen name="ProposeTradeScreen" component={ProposeTradeScreen}  options={{title: 'Propose Trade'}}/>
         <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{title: 'Item Details'}} />
+        <Stack.Screen name='ImagePick' options={{title: 'Pick an Image', gestureEnabled: false, headerBackVisible: false}} component={ImagePick}/>
         <Stack.Screen name="LoginScreen" component={AuthPage} options={{title: 'Login'}} />
       </Stack.Navigator>
     </NavigationContainer>

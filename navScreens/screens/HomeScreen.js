@@ -22,9 +22,13 @@ export default function ProfileScreen(props) {
 
 
   const downloadImage = async () => {
-    console.log('isloading?', isLoading);
-    const profilePic = await s3.downloadImage(userData.imageUri);
-    setImage(profilePic);
+    if(userData.thumbnail_url) {
+      setImage(userData.thumbnail_url);
+    } else {
+      console.log('isloading?', isLoading);
+      const profilePic = await s3.downloadImage(userData.imageUri);
+      setImage(profilePic);
+    }
   };
 
   React.useEffect(() => {
