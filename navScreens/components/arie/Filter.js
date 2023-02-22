@@ -5,6 +5,8 @@ import { Surface } from 'react-native-paper';
 import axios from 'axios';
 import { ScrollView, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
+import ItemCard from './ItemCard.js';
+import { getAllDevices } from '../../API.js';
 /// clean imports
 
 
@@ -15,6 +17,19 @@ export default function Filter(props) {
 
   const [category, setCategory] = useState('Category');
   const [condition, setCondition] = useState('Condition');
+  const [items, setItems] = useState([]);
+
+  React.useEffect(() => {
+    getAllDevices()
+    .then(res => {
+      console.log(res.data);
+      setItems(res.data);
+    })
+    .catch(err => {
+      console.warn('getAllDevices error in useEffect', err);
+    })
+  }, [])
+
 
   const categoryList = [
     {
@@ -30,48 +45,67 @@ export default function Filter(props) {
       value: 'other'
     }
   ];
+
   const conditionList = [
     {
-      label: 'Mint',
-      value: 'mint'
+      label: 'Any',
+      value: 'Any'
+    },
+    {
+      label: 'Open Box',
+      value: 'Open Box'
+    },
+    {
+      label: 'Like New',
+      value: 'Like New'
+    },
+    {
+      label: 'Fair',
+      value: 'Fair'
     },
     {
       label: 'Good',
-      value: 'good'
-    },
-    {
-      label: 'Used',
-      value: 'used'
+      value: 'Good'
     }
   ];
 
   return (
 
-        <ScrollView>
-          <DropDown
-            style={{ margin: 15 }}
-            label={"Category"}
-            mode={"outlined"}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            value={category}
-            setValue={setCategory}
-            list={categoryList}
-          />
-          <View style={styles.spacerStyle} />
-          <DropDown
+    <View>
+      <DropDown
+        label={"Category"}
+        mode={"outlined"}
+        visible={showDropDown}
+        showDropDown={() => setShowDropDown(true)}
+        onDismiss={() => setShowDropDown(false)}
+        value={category}
+        setValue={setCategory}
+        list={categoryList}
+      />
+      <View style={styles.spacerStyle} />
+      <DropDown
 
-            label={"Condition"}
-            mode={"outlined"}
-            visible={showDropDown2}
-            showDropDown={() => setShowDropDown2(true)}
-            onDismiss={() => setShowDropDown2(false)}
-            value={condition}
-            setValue={setCondition}
-            list={conditionList}
-          />
-        </ScrollView>
+        label={"Condition"}
+        mode={"outlined"}
+        visible={showDropDown2}
+        showDropDown={() => setShowDropDown2(true)}
+        onDismiss={() => setShowDropDown2(false)}
+        value={condition}
+        setValue={setCondition}
+        list={conditionList}
+      />
+      <ScrollView>
+        {items.map((item, i) => { 
+          if(condition === 'Condition' || condition === 'Any') {
+            return <ItemCard item={item} id={item.id} />
+          } else {
+            return condition === item.item_condition && <ItemCard item={item} id={item.id} />
+          }
+
+
+        })}
+      </ScrollView>
+    </View>
 
   );
 }
