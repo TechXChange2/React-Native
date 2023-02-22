@@ -11,7 +11,7 @@ Amplify is Amazon's full stack project manager. It will make it easier to add an
 3. Run `amplify init` to initilise a new Amplify project in your app
   - choose profile to connect to the iam User you just made
   - an amplify folder in your project will appear
-4. Run `amplify add storage` (make sure to setup with Auth)
+4. Run `amplify add storage` (make sure to setup with Auth + Guests !)
 5. Run `amplify push` to deploy the Storage and Auth resources in Aws Amplify project
 6. Put the following configuration in your App's root file:
 

@@ -10,8 +10,8 @@ import { ActivityIndicator, Avatar } from 'react-native-paper';
 
 
 import { Amplify, Storage } from 'aws-amplify';
-import awsconfig from "../../src/aws-exports.js";
-Amplify.configure(awsconfig);
+// import awsconfig from "../../src/aws-exports.js";
+// Amplify.configure(awsconfig);
 
 export default function ImagePick1({navigation}) {
   const [phoneUri, setPhoneUri] = useState(null);

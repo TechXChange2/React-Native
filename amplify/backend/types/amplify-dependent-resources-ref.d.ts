@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "techx428aec2ae": {
+    "techx5a7e9084d": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -11,7 +11,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "s3techx4": {
+    "s3f08a4d01": {
       "BucketName": "string",
       "Region": "string"
     }

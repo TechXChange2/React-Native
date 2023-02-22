@@ -15,9 +15,9 @@ import { ActivityIndicator, Avatar } from 'react-native-paper';
 
 //Amplidy S3 for image
 import { Amplify, Storage, Auth } from 'aws-amplify';
-// import awsconfig from "../../src/aws-exports.js";
-// // import Auth from "@aws-amplify/auth";
-// Amplify.configure(awsconfig);
+import awsconfig from "../../src/aws-exports.js";
+// import Auth from "@aws-amplify/auth";
+Amplify.configure(awsconfig);
 
 
 export default function RegisterScreen({navigation, route}) {
@@ -41,11 +41,11 @@ export default function RegisterScreen({navigation, route}) {
   const fetchImageFromUri = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    console.log('blob?:', blob instanceof Blob);
+    // console.log('blob?:', blob instanceof Blob);
     return blob;
   };
   const uploadImage = (filename, img2) => {
-    // Auth.currentCredentials();
+    Auth.currentCredentials();
     return Storage.put(filename, img2, {
       level: "public",
       contentType: "image/jpeg"
@@ -58,22 +58,18 @@ export default function RegisterScreen({navigation, route}) {
       })
       .catch((error) => {
         console.log('UploadImg Error: ', error);
-        return error.response;
+        return error;
+        // return error.response;
       });
   };
 
   const handleRegister = async () => {
-    // var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : [];
-    var locationArr = [];
+    var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : [];
+    const imageUri = route.params?.phoneUri;
 
-    //Upload image (create name for image)
-    const imageUri1 = route.params?.phoneUri;
-    console.log('image uri', imageUri1);
-    // return;
-    const img = await fetchImageFromUri(imageUri1);
-    const imgName = 'email?=' + email + '?-' + (new Date().toISOString()) + '.jpeg';
-    console.log('name:', imgName);
-    console.log('blob?:', img instanceof Blob);
+    try {
+    const img = await fetchImageFromUri(imageUri);
+    const imgName = 'email?=' + (email || (name || 'empty')) + '?-' + (new Date().toISOString()) + '.jpeg';
     const imageKey = await uploadImage(imgName, img);
 
     var userObj = {
@@ -87,13 +83,16 @@ export default function RegisterScreen({navigation, route}) {
       country: locationArr[2]
     }
     console.log('USER SignUp: ', userObj);
-    return;
-    try {
+    // return;
+
       const user = await createUser(userObj)
       console.log('Added User to DB', user.data);
       await createUserWithEmailAndPassword(auth, email, pass);
       console.log('Added User to FB');
       setIsLoading(true)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 5000);
 
     } catch(e) {
       console.error('Error ', e)

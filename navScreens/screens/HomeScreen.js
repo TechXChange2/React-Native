@@ -12,8 +12,7 @@ import PendingTrades from '../components/evan/PendingTrades.js';
 import Bookmarks from '../components/evan/Bookmarks.js';
 import YourItems from '../components/evan/YourItems.js';
 //Amplify + S3
-import { Storage } from 'aws-amplify';
-import Auth from "@aws-amplify/auth";
+import { Storage, Auth } from 'aws-amplify';
 
 
 
@@ -27,6 +26,7 @@ export default function ProfileScreen(props) {
     console.log('isloading?', isLoading);
     Auth.currentCredentials();
     const img = await Storage.get(userData.imageUri);
+    // console.log('img', img);
     setImage(img);
   };
 
