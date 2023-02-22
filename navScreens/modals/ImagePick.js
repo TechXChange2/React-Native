@@ -13,8 +13,11 @@ import { Amplify, Storage } from 'aws-amplify';
 // import awsconfig from "../../src/aws-exports.js";
 // Amplify.configure(awsconfig);
 
-export default function ImagePick1({navigation}) {
+export default function ImagePick1({navigation, route}) {
   const [phoneUri, setPhoneUri] = useState(null);
+  const fromPage = route.params.fromPage;
+  const goToPage = fromPage === 'register' ? 'RegisterScreen' : 'AddItem';
+  const btnText = fromPage === 'register' ? 'Register' : 'Add Item Form';
   // const [afterSelection, setAfterSelection] = useState(false);
 
   //GET OS PERMISSIONS
@@ -83,7 +86,7 @@ export default function ImagePick1({navigation}) {
       )}
       <View style={styles.buttons}>
       { phoneUri ? (
-        <Button onPress={() => navigation.navigate('RegisterScreen', {phoneUri})} title="Return to Register with Image" />
+        <Button onPress={() => navigation.navigate(goToPage, {phoneUri})} title={`Return to ${btnText} with Image`} />
       ) : (
         <>
         <Button onPress={pickImage} title="Pick an image from camera roll" />

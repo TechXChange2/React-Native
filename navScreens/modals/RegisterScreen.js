@@ -12,12 +12,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { createUser, deleteUser } from '../API.js';
 import { GOOGLE_PLACES_WEB_API } from '@env';
 import { ActivityIndicator, Avatar } from 'react-native-paper';
-
-//Amplidy S3 for image
-import { Amplify, Storage, Auth } from 'aws-amplify';
-import awsconfig from "../../src/aws-exports.js";
-// import Auth from "@aws-amplify/auth";
-Amplify.configure(awsconfig);
+import s3 from '../../globals/s3Utils.js';
 
 
 export default function RegisterScreen({navigation, route}) {
@@ -38,39 +33,36 @@ export default function RegisterScreen({navigation, route}) {
   const [googleApiKey, dontSetGoogleApiKey] = React.useState(process.env.GOOGLE_PLACES_WEB_API);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const fetchImageFromUri = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    // console.log('blob?:', blob instanceof Blob);
-    return blob;
-  };
-  const uploadImage = (filename, img2) => {
-    Auth.currentCredentials();
-    return Storage.put(filename, img2, {
-      level: "public",
-      contentType: "image/jpeg"
-      // progressCallback(progress) {
-        // setLoading(progress);
-      // },
-    })
-      .then((response) => {
-        return response.key;
-      })
-      .catch((error) => {
-        console.log('UploadImg Error: ', error);
-        return error;
-        // return error.response;
-      });
-  };
+  // const fetchImageFromUri = async (uri) => {
+  //   const response = await fetch(uri);
+  //   const blob = await response.blob();
+  //   // console.log('blob?:', blob instanceof Blob);
+  //   return blob;
+  // };
+  // const uploadImage = (filename, img2) => {
+  //   Auth.currentCredentials();
+  //   return Storage.put(filename, img2, {
+  //     level: "public",
+  //     contentType: "image/jpeg"
+  //   })
+  //     .then((response) => {
+  //       return response.key;
+  //     })
+  //     .catch((error) => {
+  //       console.log('UploadImg Error: ', error);
+  //       return error;
+  //       // return error.response;
+  //     });
+  // };
 
   const handleRegister = async () => {
     var locationArr = cityStateCountry.length ? cityStateCountry.split(', ') : [];
     const imageUri = route.params?.phoneUri;
 
     try {
-    const img = await fetchImageFromUri(imageUri);
+    const img = await s3.fetchImageFromUri(imageUri);
     const imgName = 'email?=' + (email || (name || 'empty')) + '?-' + (new Date().toISOString()) + '.jpeg';
-    const imageKey = await uploadImage(imgName, img);
+    const imageKey = await s3.uploadImage(imgName, img);
 
     var userObj = {
       email,
@@ -106,7 +98,7 @@ export default function RegisterScreen({navigation, route}) {
       style={styles.container}
       keyboardVerticalOffset={keyOffset}
       >
-      <Button title="Pick an image from camera roll" onPress={() => navigation.navigate('ImagePick')} />
+      <Button title="Pick an image from camera roll" onPress={() => navigation.navigate('ImagePick', {fromPage: 'register'})} />
       {route.params?.phoneUri && (
       <View>
           <Avatar.Image size={80} source={{uri: route.params?.phoneUri}} />

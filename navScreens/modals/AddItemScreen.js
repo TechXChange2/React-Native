@@ -4,16 +4,29 @@ import { StyleSheet, Button, Text, View, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import * as API from '../API';
 import {Context} from '../../globals/context.js'
+import { useIsFocused } from '@react-navigation/native';
+import s3 from '../../globals/s3Utils.js';
+
+
 
 export default function AddItemScreen({user}) {
+  const isFocused = useIsFocused();
   const {userData, isReady, setIsReady} = React.useContext(Context);
   const [itemName, setItemName] = React.useState('');
   const [imageURL, setImageURL] = React.useState('');
   const [condition, setCondition] = React.useState('');
   const [description, setDescription] = React.useState('');
 
-  const handleAddItem = () => {
-    let itemObj = {name: itemName, user_id: userData.id, thumbnail_url: imageURL, description: description, item_condition: condition};
+
+  const handleAddItem = async () => {
+  const imageUri = route.params?.phoneUri;
+
+  const img = await s3.fetchImageFromUri(imageUri);
+  const imgName = 'email?=' + (userData.email || 'empty') + '?-' + (new Date().toISOString()) + '.jpeg';
+  const imageKey = await s3.uploadImage(imgName, img);
+
+    //////////////
+    let itemObj = {name: itemName, user_id: userData.id, thumbnail_url: imageKey, description: description, item_condition: condition};
     console.log()
     API.insertDevice(userData.id, itemObj)
       .then((res) => {
@@ -30,6 +43,7 @@ export default function AddItemScreen({user}) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
+      <Button title="Pick an image from camera roll" onPress={() => navigation.navigate('ImagePick', {fromPage: 'additem'})} />
       <TextInput
       style={styles.input}
       placeholder="Item Name"
