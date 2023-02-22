@@ -3,8 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, ScrollView, View, Image, Button, TouchableOpacity } from 'react-native';
 import * as API from '../API.js';
 import {Context} from '../../globals/context.js';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
@@ -19,7 +17,6 @@ export default function ItemDetailsScreen({route, navigation}) {
 
 
  useEffect(() => {
-  console.log('mounting......');
   if(bookmarksArr.includes(itemId)) {
     setAlreadyBookmarked(true);
   }
@@ -33,12 +30,9 @@ export default function ItemDetailsScreen({route, navigation}) {
 
 useEffect(() => {
   if (itemInfo) {
-    // console.log('item info', itemInfo);
-  API.getUserFromId(itemInfo.user_id)
+ API.getUserFromId(itemInfo.user_id)
     .then((response) => {
-      // console.log('res in get user from id', response.data[0]);
       setSellerData(response.data[0]);
-
     }).catch((error) => {
       console.log(error);
     });
@@ -46,7 +40,6 @@ useEffect(() => {
 }, [itemInfo]);
 
 const onAddButtonClick = (e) => {
-  console.log('add bookmark clicked');
   setAlreadyBookmarked(true);
   e.preventDefault();
   const bookmarkObj = {
@@ -73,17 +66,13 @@ const resetBookmarksReady = () => {
       <TouchableOpacity
       style={styles.addBookmark}
       onPress={(e) => {resetBookmarksReady(); onAddButtonClick(e)}}
-      disabled={alreadyBookmarked ? true : false}
-      >
+      disabled={alreadyBookmarked ? true : false}>
         <Ionicons name='bookmarks-outline' size={40} color={alreadyBookmarked ? 'grey' : '#007AFF'}/>
-      </TouchableOpacity>
-      )}
+      </TouchableOpacity>)}
       <Text style={styles.itemName}>{itemInfo.name}</Text>
       <View style={styles.avatar}>
         <Avatar.Image size={200} source={{url: itemInfo.thumbnail_url}} />
       </View>
-
-
       <View style={styles.currentOwnerInfo}>
         <Text style={styles.headerText}>Current Owner</Text>
         <View style={styles.currentOwnerInfoBody}>
@@ -106,9 +95,7 @@ const resetBookmarksReady = () => {
           </View>
         </View>
       </View>
-
       <View style={styles.itemDetailsInfo} size={20} >
-        {/* <Text style={styles.headerText}>Description</Text> */}
         <View style={styles.itemDetailsInfoBody}>
           <View style={styles.inlineStyleDescription}>
             <Ionicons name="list-outline" size={20}/>
@@ -120,32 +107,28 @@ const resetBookmarksReady = () => {
           </View>
         </View>
       </View>
-
       <View style={styles.buttonStyle}>
-        <Button title="Propose Trade" onPress={() => navigation.navigate('ProposeTradeScreen', { itemInfo: itemInfo }) } ></Button>
+        <Button title="Propose Trade" onPress={() => navigation.navigate('ProposeTradeScreen', { itemInfo: itemInfo, sellerData: sellerData }) } color={'#fff'}></Button>
       </View>
-
     </ScrollView>
-  )
-
-);
+  ));
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   avatar: {
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingTop: 10,
+    paddingBottom: 5
   },
   itemName: {
     fontSize: 40,
     textAlign: 'center',
-    marginTop: -20,
-    marginBottom: 10
+    marginTop: 0
   },
   addBookmark: {
     width: '90%',
@@ -154,14 +137,13 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   currentOwnerInfo: {
-    minHeight: 190,
+    maxHeight: 200,
     backgroundColor: 'rgb(211, 240, 245)',
     paddingLeft: 20,
     width: '100%',
     fontSize: 24,
     marginTop: 20,
-    paddingBottom: 20
-    // maxWidth: 375
+    paddingBottom: 5
   },
   currentOwnerInfoBody: {
     display: 'flex',
@@ -169,14 +151,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
     marginLeft: -30,
-    fontSize: 20
+    fontSize: 20,
+    marginBottom: 10
   },
   itemDetailsInfo: {
     minHeight: 150,
     paddingLeft: 20,
     width: '100%',
     fontSize: 24,
-    marginBottom: -30
+    marginBottom: -40
   },
   itemDetailsInfoBody: {
     display: 'flex',
@@ -184,7 +167,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     marginTop: 5,
-    marginBottom: 10,
     marginLeft: 10,
     fontSize: 20,
     width: '80%'
@@ -208,7 +190,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: 5,
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   inlineStyleDescription: {
     display: 'flex',
@@ -219,22 +201,21 @@ const styles = StyleSheet.create({
   },
   detailText: {
     marginLeft: 10,
-    fontSize: 18,
-   // marginTop: 15
+    fontSize: 18
   },
   detailText1: {
     flex: 1,
     marginLeft: 10,
     fontSize: 18,
-   // marginTop: 15
   },
   buttonStyle: {
-    borderColor: '#1f96f3',
-    // backgroundColor: '#1f96f3',
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
     borderWidth: 2.5,
     width: '85%',
     borderRadius: 10,
-    marginBottom: 20
+    position: 'absolute',
+    bottom: 40
   }
 
 });

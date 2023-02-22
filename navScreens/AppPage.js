@@ -63,7 +63,7 @@ export default function AppPage() {
         options={{headerShown: false}}
         />
         <Stack.Screen name="AddItem" component={AddItemScreen} />
-        <Stack.Screen name="ProposeTradeScreen" component={ProposeTradeScreen} />
+        <Stack.Screen name="ProposeTradeScreen" component={ProposeTradeScreen}  options={{title: 'Propose Trade'}}/>
         <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{title: 'Item Details'}} />
         <Stack.Screen name="LoginScreen" component={AuthPage} options={{title: 'Login'}} />
       </Stack.Navigator>
