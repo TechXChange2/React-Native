@@ -27,13 +27,13 @@ export default function ProfileScreen(props) {
     setImage(img);
   };
 
-React.useEffect(() => {
-  downloadImage();
-  }, [])
-React.useEffect(() => {
-  if(image) {
-    setIsLoading(false);
-  }
+  React.useEffect(() => {
+    downloadImage();
+    }, [])
+  React.useEffect(() => {
+    if(image) {
+      setIsLoading(false);
+    }
   }, [image])
 
   //Show Loading
@@ -49,6 +49,7 @@ React.useEffect(() => {
       </View>
     )
   }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.logout}>
