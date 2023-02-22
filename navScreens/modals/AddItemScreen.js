@@ -1,21 +1,25 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, Text, View, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import * as API from '../API';
+import {Context} from '../../globals/context.js'
 
 export default function AddItemScreen({user}) {
+  const {userData, isReady, setIsReady} = React.useContext(Context);
   const [itemName, setItemName] = React.useState('');
   const [imageURL, setImageURL] = React.useState('');
   const [condition, setCondition] = React.useState('');
   const [description, setDescription] = React.useState('');
 
   const handleAddItem = () => {
-    let user = {id:2};
-    let itemObj = {name: itemName, thumbnail_url: imageURL, description: description, item_condition: condition};
+    let itemObj = {name: itemName, user_id: userData.id, thumbnail_url: imageURL, description: description, item_condition: condition};
     console.log()
-    API.insertDevice(user.id, itemObj)
+    API.insertDevice(userData.id, itemObj)
       .then((res) => {
+        let isReadyObj = isReady;
+        isReadyObj.yourItems = true;
+        setIsReady(isReadyObj);
         console.log('success adding an item');
       })
       .catch((err) => {
@@ -48,15 +52,9 @@ export default function AddItemScreen({user}) {
       defaultValue=""/>
       <StatusBar style="auto" />
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {handleAddItem()}}
-        style={styles.button}
-        >
-          <Text>
-            Add Item
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.buttonStyle} >
+          <Button title="Add Item" onPress={handleAddItem} color={'#fff'}></Button>
+        </View>
     </View>
   );
 }
@@ -72,17 +70,19 @@ const styles = StyleSheet.create({
     // backgroundColor: 'lightblue',
     width: '80%'
   },
+  buttonStyle: {
+    borderColor: '#007AFF',
+    borderWidth: 2.5,
+    width: '80%',
+    marginTop: 40,
+    borderRadius: 10,
+    backgroundColor: '#007AFF',
+    // position: 'absolute',
+    // bottom: 40
+  },
   input: {
-    backgroundColor: 'grey',
+    backgroundColor: 'lightgrey',
     marginTop: 10
   },
-  buttonContainer: {
-    backgroundColor: '#007AFF',
-    marginTop: 20,
-    width: '60%'
-  },
-  button: {
-    paddingVertical: 25,
-    alignItems: 'center'
-  },
+
 });
