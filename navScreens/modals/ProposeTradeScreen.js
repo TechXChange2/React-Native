@@ -11,7 +11,7 @@ import { Avatar } from 'react-native-paper';
 
 export default function ProposeTradeScreen({route, navigation}) {
   const itemInfo = route.params.itemInfo;
-  const {userData} = React.useContext(Context);
+  const {userData, isReady, setIsReady} = React.useContext(Context);
   const [userDevices, setUserDevices] = useState([]);
   const [selectedUserDevice, setSelectedUserDevice] = useState();
   const [selectedDeviceURL, setSelectedDeviceURL] = useState('');
@@ -20,6 +20,7 @@ export default function ProposeTradeScreen({route, navigation}) {
     API.getItemsFromUserID(userData.id)
     .then((response) => {
       setUserDevices(response.data)
+      setSelectedUserDevice(response.data[0]);
       setSelectedDeviceURL(response.data[0].thumbnail_url)
       }).catch((error) => {
         console.log(error);
@@ -35,21 +36,26 @@ export default function ProposeTradeScreen({route, navigation}) {
     e.preventDefault();
     API.createTrade({
       "proposer_id": Number(userData.id),
-      "proposer_device_id": Number(selectedUserDevice),
+      "proposer_device_id": Number(selectedUserDevice.id),
       "receiver_id": Number(itemInfo.user_id),
       "receiver_device_id": Number(itemInfo.id),
       "status": "proposed"
     });
+    let isReadyObj = isReady;
+    isReadyObj.trades = true;
+    setIsReady(isReadyObj);
     navigation.navigate('ItemDetails', { itemInfo: itemInfo })
   }
 
   useEffect(() => {
-    API.getItemFromID(selectedUserDevice)
-      .then((response) => {
-        setSelectedDeviceURL(response.data[0].thumbnail_url);
-      }).catch((error) => {
-        console.log(error);
-      });
+    if(selectedUserDevice) {
+      API.getItemFromID(selectedUserDevice.id)
+        .then((response) => {
+          setSelectedDeviceURL(response.data[0].thumbnail_url);
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
   }, [selectedUserDevice]);
 
   const deviceMap = userDevices.map((device, index) => {
