@@ -59,6 +59,7 @@ export default function ProposeTradeScreen({route, navigation}) {
   }, [selectedUserDevice]);
 
   const deviceMap = userDevices.map((device, index) => {
+
     return (
       <TouchableOpacity
       style={styles.selectableDevice}

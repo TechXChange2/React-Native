@@ -21,18 +21,16 @@ export default function ProfileScreen(props) {
   updateNav(props.navigation);
 
 
-  const downloadImage = async () => {
-    if(userData.thumbnail_url) {
-      setImage(userData.thumbnail_url);
-    } else {
-      console.log('isloading?', isLoading);
-      const profilePic = await s3.downloadImage(userData.imageUri);
-      setImage(profilePic);
-    }
-  };
 
   React.useEffect(() => {
-    downloadImage();
+    s3.getProfilePic(userData)
+    .then(res => setImage(res))
+    .catch(err => {
+      console.error(err)
+      console.warn('could not get profile image on home screen')
+
+    })
+    // downloadImage();
     }, [])
   React.useEffect(() => {
     if(image) {

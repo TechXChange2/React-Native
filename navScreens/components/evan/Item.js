@@ -9,20 +9,14 @@ const Item = ({item, isYours}) => {
   const {nav} = React.useContext(Context);
   const [soldBy, setSoldBy] = React.useState();
   const [ownerData, setOwnerData] = React.useState();
-  const [image, setImage] = React.useState();
+  const [ownerImg, setOwnerImg] = React.useState();
+  const [itemImage, setItemImage] = React.useState();
 
   React.useEffect(() => {
     //for ALL items, we have to download the image from the thumbnail_url first
-    if(item.thumbnail_url.indexOf('http') !== -1) {
-      setImage(item.thumbnail_url);
-    } else {
-      s3.downloadImage(item.thumbnail_url)
-    .then(res => {
-      // console.log('img uri:', res);
-      setImage(res)
-    })
-    .catch(e => console.error(e))
-    }
+    s3.getItemImage(item)
+    .then(res => setItemImage(res))
+    .catch(err => console.error(err))
     //for bookmarks, we also need the owner information
     if(!isYours) {
       getUserFromId(item.user_id)
@@ -33,13 +27,21 @@ const Item = ({item, isYours}) => {
     }
   }, [])
 
+  React.useEffect(() => {
+    if(ownerData) {
+      s3.getProfilePic(ownerData)
+      .then(res => setOwnerImg(res))
+      .catch(err => console.error(err))
+    }
+  }, [ownerData])
+
 
 //navigation.navigate('ItemDetail', {itemId})
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: item.id, isYours})} style={styles.avatar}>
     {/* <Avatar.Image size={100} source={require('../../../assets/icon.png')} /> */}
-        <Avatar.Image size={100} source={{ uri: image}} />
+        <Avatar.Image size={100} source={{ uri: itemImage}} />
       </TouchableOpacity>
       <View style={styles.info}>
         <View style={styles.title}>
@@ -51,7 +53,7 @@ const Item = ({item, isYours}) => {
         { !isYours && (
         <View style={styles.soldBy}>
           <View>
-            <Avatar.Image size={50} source={{uri: ownerData?.thumbnail_url}} />
+            <Avatar.Image size={50} source={{uri: ownerImg}} />
           </View>
           <View style={styles.nameBox}>
             <Text style={styles.ownerName}>{ownerData?.name}</Text>

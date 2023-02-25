@@ -15,6 +15,7 @@ export default function ItemDetailsScreen({route, navigation}) {
   const {userData, isReady, setIsReady, bookmarksArr} = React.useContext(Context);
   const [itemInfo, setItemInfo] = useState({});
   const [sellerData, setSellerData] = React.useState();
+  const [sellerImg, setSellerImg] = React.useState();
   const [alreadyBookmarked, setAlreadyBookmarked] = React.useState();
   const [itemImage, setItemImage] = React.useState();
 
@@ -33,13 +34,9 @@ export default function ItemDetailsScreen({route, navigation}) {
 
 const setTheImage = async () => {
   console.log('img url: ', itemInfo.thumbnail_url)
-   //Set the image based on data
-   if(itemInfo.thumbnail_url.indexOf('http') !== -1) {
-    setItemImage(itemInfo.thumbnail_url);
-  } else {
-    const itemPic = await s3.downloadImage(itemInfo.thumbnail_url);
-    setItemImage(itemPic);
-  }
+  s3.getItemImage(itemInfo)
+  .then(res => setItemImage(res))
+  .catch(err => console.log(err))
 }
 
 useEffect(() => {
@@ -55,6 +52,14 @@ useEffect(() => {
     }
   }
 }, [itemInfo]);
+
+useEffect(() => {
+  if(sellerData) {
+    s3.getProfilePic(sellerData)
+    .then(res => setSellerImg(res))
+    .catch(err => console.log(err));
+  }
+}, [sellerData])
 
 const onAddButtonClick = (e) => {
   setAlreadyBookmarked(true);
@@ -96,7 +101,7 @@ const resetBookmarksReady = () => {
         <Text style={styles.headerText}>Current Owner</Text>
         <View style={styles.currentOwnerInfoBody}>
           <View style={styles.avatar}>
-            <Avatar.Image size={100} source={{url: sellerData.thumbnail_url}} />
+            <Avatar.Image size={100} source={{url: sellerImg}} />
           </View>
           <View style={styles.ownerDetails}>
             <View style={styles.inlineStyle}>

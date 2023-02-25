@@ -94,8 +94,8 @@ export default function Filter(props) {
         setValue={setCondition}
         list={conditionList}
       />
-      <ScrollView>
-        {items.map((item, i) => { 
+      <ScrollView style={styles.scroll}>
+        {items.map((item, i) => {
           if(condition === 'Condition' || condition === 'Any') {
             return <ItemCard item={item} id={item.id} />
           } else {
@@ -113,6 +113,11 @@ export default function Filter(props) {
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
+  },
+  scroll: {
+    // backgroundColor: 'red',
+    marginTop: 20,
+    height: 430
   },
   spacerStyle: {
     marginBottom: 15,

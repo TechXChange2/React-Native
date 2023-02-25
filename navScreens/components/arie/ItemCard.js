@@ -2,16 +2,26 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Avatar } from 'react-native-paper'
 import { Context } from '../../../globals/context.js'
+import s3 from '../../../globals/s3Utils.js'
 
 const ItemCard = ({item}) => {
   const {nav} = React.useContext(Context);
+  const [itemImage, setItemImage] = React.useState();
+
+  React.useEffect(() => {
+    if(item) {
+      s3.getItemImage(item)
+      .then(res => setItemImage(res))
+      .catch(err => console.error(err))
+    }
+  }, [])
 
 //navigation.navigate('ItemDetail', {itemId})
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: item.id})} style={styles.avatar}>
     {/* <Avatar.Image size={100} source={require('../../../assets/icon.png')} /> */}
-        <Avatar.Image size={100} source={{ url: item.thumbnail_url}} />
+        <Avatar.Image size={100} source={{ uri: itemImage}} />
       </TouchableOpacity>
       <View style={styles.info}>
         <View style={styles.title}>
@@ -36,7 +46,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightblue'
+    borderBottomColor: 'lightblue',
+    marginTop: 30,
     // backgroundColor: 'lightblue',
   },
   avatar: {
