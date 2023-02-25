@@ -97,7 +97,7 @@ export default function Filter(props) {
       <ScrollView style={styles.scroll}>
         {items.map((item, i) => {
           if(condition === 'Condition' || condition === 'Any') {
-            return <ItemCard item={item} id={item.id} />
+            return <ItemCard key={item.id} item={item} id={item.id} />
           } else {
             return condition === item.item_condition && <ItemCard item={item} id={item.id} />
           }
