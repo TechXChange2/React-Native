@@ -1,14 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import DropDown from "react-native-paper-dropdown";
+import React from 'react';
+import { useState } from 'react';
+import Filter from '../components/arie/Filter.js';
+import ItemCard from '../components/arie/ItemCard.js';
+import Item from '../components/evan/Item.js';
+import { getAllDevices } from '../API.js';
 
-export default function SearchScreen({route}) {
-
+export default function SearchScreen({ route }) {
   const params = route.params;
+
+
+
 
   return (
     <View style={styles.container}>
-      <Text>Search</Text>
+      <Text>Filters</Text>
       <StatusBar style="auto" />
+      <Filter />
     </View>
   );
 }
@@ -16,8 +26,10 @@ export default function SearchScreen({route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 30
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });

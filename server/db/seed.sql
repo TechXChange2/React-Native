@@ -32,7 +32,7 @@ INSERT INTO devices (`user_id`, `name`, `thumbnail_url`, `description`, `item_co
 VALUES (3, 'Galaxy S9', 'https://www.lifewire.com/thmb/bQUvzoJ0ialmWWU7YGR6bTjCtek=/1000x1000/filters:no_upscale():max_bytes(150000):strip_icc()/4043781-6-HeroSquare-ff6cc4599b9d4120a540c5c3bbf74b20.jpg', 'galaxy is fast and reliable; great camera', 'Good');
 
 INSERT INTO trades (`proposer_id`, `proposer_device_id`, `receiver_id`, `receiver_device_id`, `status`)
-VALUES (1, 1, 2, 3,'proposed');
+VALUES (1, 1, 2, 3,'approved');
 
 INSERT INTO trades (`proposer_id`, `proposer_device_id`, `receiver_id`, `receiver_device_id`, `status`)
 VALUES (2, 4, 3, 5,'approved');
@@ -44,10 +44,14 @@ INSERT INTO trades (`proposer_id`, `proposer_device_id`, `receiver_id`, `receive
 VALUES (1, 1, 2, 4,'proposed');
 
 INSERT INTO trades (`proposer_id`, `proposer_device_id`, `receiver_id`, `receiver_device_id`, `status`)
-VALUES (1, 2, 3, 5,'proposed');
+VALUES (1, 2, 3, 5,'completed');
 
-INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (1, 1);
 
-INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (2, 2);
+INSERT INTO bookmarks (`user_id`, `item_id`) VALUES (1, 3);
+INSERT INTO bookmarks (`user_id`, `item_id`) VALUES (1, 5);
 
-INSERT INTO bookmarks (`item_id`, `user_id`) VALUES (2, 1);
+INSERT INTO bookmarks (`user_id`, `item_id`) VALUES (2, 1);
+INSERT INTO bookmarks (`user_id`, `item_id`) VALUES (2, 5);
+
+INSERT INTO bookmarks (`user_id`, `item_id`) VALUES (3, 1);
+INSERT INTO bookmarks (`user_id`, `item_id`) VALUES (3, 4);

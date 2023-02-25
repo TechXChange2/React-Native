@@ -2,7 +2,10 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,15 +19,38 @@ import AddItemScreen from './modals/AddItemScreen.js';
 import ProposeTradeScreen from './modals/ProposeTradeScreen.js';
 import ItemDetailsScreen from './screens/ItemDetailsScreen.js';
 import AuthPage from './AuthPage.js';
+import ImagePick from './modals/ImagePick.js';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
 export default function AppPage() {
+  const navRef = useNavigationContainerRef();
+  const routeNameRef = React.useRef();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+    ref={navRef}
+    onReady ={() => {
+      routeNameRef.current = navRef.getCurrentRoute().name;
+    }}
+    onStateChange={async ()=> {
+      const prevRouteName = routeNameRef.current;
+      const currentRouteName = navRef.getCurrentRoute().name;
+
+      // console.log('prev route name: ', prevRouteName)
+      // console.log('current route name: ', currentRouteName)
+      if (prevRouteName !== currentRouteName) {
+        // Save the current route name for later comparison
+        routeNameRef.current = currentRouteName;
+
+        console.log(`ROUTE CHANGED from ${prevRouteName} to ${currentRouteName}`);
+        // Replace the line below to add the tracker from a mobile analytics SDK
+      }
+    }}
+    >
       <Stack.Navigator
       initialRouteName='HomeTabs'
       screenOptions={{
@@ -38,9 +64,10 @@ export default function AppPage() {
         component={HomeTabs}
         options={{headerShown: false}}
         />
-        <Stack.Screen name="AddItem" component={AddItemScreen} />
-        <Stack.Screen name="ProposeTradeScreen" component={ProposeTradeScreen} />
+        <Stack.Screen name="AddItem" component={AddItemScreen} options={{title: 'Add Item'}}/>
+        <Stack.Screen name="ProposeTradeScreen" component={ProposeTradeScreen}  options={{title: 'Propose Trade'}}/>
         <Stack.Screen name="ItemDetails" component={ItemDetailsScreen} options={{title: 'Item Details'}} />
+        <Stack.Screen name='ImagePick' options={{title: 'Pick an Image', gestureEnabled: false, headerBackVisible: false}} component={ImagePick}/>
         <Stack.Screen name="LoginScreen" component={AuthPage} options={{title: 'Login'}} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -49,7 +76,7 @@ export default function AppPage() {
 
 //TABS PAGE
 
-function HomeTabs() {
+function HomeTabs({navigation}) {
 
   return (
       <Tab.Navigator
@@ -70,7 +97,7 @@ function HomeTabs() {
 
           return <Ionicons name={iconName} size={size} color={color}/>
         },//tabBarIcon
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'grey',
         tabBarActiveBackgroundColor: 'white',
         tabBarStyle: {

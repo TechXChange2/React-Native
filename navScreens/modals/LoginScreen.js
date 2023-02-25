@@ -5,6 +5,7 @@ import {Context} from '../../globals/context.js';
 import { TextInput } from 'react-native-paper';
 import { auth } from '../../globals/firebase.js';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "firebase/auth";
+import { ActivityIndicator } from 'react-native-paper';
 
 
 export default function LoginScreen({navigation}) {
@@ -15,15 +16,17 @@ export default function LoginScreen({navigation}) {
   const [emailError, setEmailError] = React.useState(false);
   const [passError, setPassError] = React.useState(false);
   const [tooManyRequests, setTooManyRequests] = React.useState(false);
+  const {isLoading, setIsLoading} = React.useContext(Context);
 
-  const {handleSignOut} = React.useContext(Context);
 
   const handleLogin = () => {
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, email, pass)
     .then(userCredentials => {
       console.log('Success Login (email): ', userCredentials.user.email);
     })
     .catch(err => {
+      setIsLoading(false);
       console.log('Error Login', JSON.stringify(err));
       console.log('Err', err.code);
       if(['auth/invalid-email', 'auth/missing-email', 'auth/user-not-found'].includes(err.code)) {
@@ -121,10 +124,22 @@ export default function LoginScreen({navigation}) {
         }
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-        onPress={handleLogin}
+        onPress={() => {setIsLoading(true); handleLogin()}}
         style={styles.button}
         >
-          <Text style={styles.loginText}>Login</Text>
+          {
+          isLoading ? (
+            <ActivityIndicator
+            animating={true}
+            color='white'
+            // color={MD2Colors.red800}
+            size='small'
+            />
+          ) : (
+            <Text style={styles.loginText}>Login</Text>
+          )
+        }
+
         </TouchableOpacity>
       </View>
       <Text style={{marginTop: 25}}>Don't have an Account? <Text

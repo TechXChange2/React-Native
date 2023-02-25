@@ -7,81 +7,30 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
-import s3 from '../../globals/s3Utils.js'
 
 
 export default function ProposeTradeScreen({route, navigation}) {
-//userDevices
-//devicelistWithImage
-//itemInfo -- to trade with
-//seller info
-
-  const itemInfo = route.params.itemInfo; //to trade with
+  const itemInfo = route.params.itemInfo;
   const {userData, isReady, setIsReady} = React.useContext(Context);
-  const [yourImage, setYourImage] = useState();
-  const [theirImage, setTheirImage] = useState();
   const [userDevices, setUserDevices] = useState([]);
-  const [devicesWithImage, setDevicesWithImage] = useState([]);
   const [selectedUserDevice, setSelectedUserDevice] = useState();
-  // const [selectedDeviceURL, setSelectedDeviceURL] = useState('');
+  const [selectedDeviceURL, setSelectedDeviceURL] = useState('');
 
-//set yourPic
-  useEffect(() => {
-    if(userData) {
-      s3.getProfilePic(userData)
-      .then(res => setYourImage(res))
-      .catch(err => console.error(err))
-      s3.getProfilePic(route.params.sellerData)
-      .then(res => setTheirImage(res))
-      .catch(err => console.error(err))
-    }
-  }, []);
-//getSetUserDevices
   useEffect(() => {
     API.getItemsFromUserID(userData.id)
     .then((response) => {
       setUserDevices(response.data)
+      setSelectedUserDevice(response.data[0]);
+      setSelectedDeviceURL(response.data[0].thumbnail_url)
       }).catch((error) => {
         console.log(error);
       })
   }, [itemInfo]);
-//print selected user device
-  // useEffect(() => {
-  //   console.log('user device: ', selectedUserDevice)
-  // }, [selectedUserDevice]);
 
-  //once user devices set, set devicesWithImage
-  useEffect(() => {
-    //create a bunch of promises
-    if(userDevices.length) {
-      const promiseMap = userDevices.map((device, index) => {
-        return new Promise((resolve, reject) => {
-          //get image
-          s3.getItemImage(device)
-          .then(img => {
-            let deviceObj = {...device};
-            deviceObj.thumbnail_url = img;
-            resolve(deviceObj)
-          })
-          // resolve with large html
-        }) //end PROMISE
-
-      });
-      Promise.all(promiseMap)
-      .then(arr => {
-        // console.log('arr', arr);
-        setDevicesWithImage(arr)
-        setSelectedUserDevice(arr[0])
-      })
-      .catch(err => console.error(err))
-    }
-
-  }, [userDevices]);
-
-  // const setDevice = (e, id) => {
-  //  e.preventDefault();
-  //  setSelectedUserDevice(id);
-  // }
+  const setDevice = (e, id) => {
+   e.preventDefault();
+   setSelectedUserDevice(id);
+  }
 
   const onSubmitProposal = (e) => {
     e.preventDefault();
@@ -98,59 +47,54 @@ export default function ProposeTradeScreen({route, navigation}) {
     navigation.navigate('ItemDetails', { itemInfo: itemInfo })
   }
 
-  // useEffect(() => {
-  //   if(selectedUserDevice) {
-  //     API.getItemFromID(selectedUserDevice.id)
-  //       .then((response) => {
-  //         setSelectedDeviceURL(response.data[0].thumbnail_url);
-  //       }).catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, [selectedUserDevice]);
+  useEffect(() => {
+    if(selectedUserDevice) {
+      API.getItemFromID(selectedUserDevice.id)
+        .then((response) => {
+          setSelectedDeviceURL(response.data[0].thumbnail_url);
+        }).catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [selectedUserDevice]);
 
+  const deviceMap = userDevices.map((device, index) => {
+
+    return (
+      <TouchableOpacity
+      style={styles.selectableDevice}
+      key={index}
+      onPress={(e) => {setDevice(e, device.id)}}
+      style={selectedUserDevice === device.id || device.thumbnail_url === selectedDeviceURL ? styles.highlighted : styles.unhighlighted}
+      >
+        <Avatar.Image size={100} source={{url: device.thumbnail_url}} />
+      </TouchableOpacity>
+    )
+  });
 
   return (
     <View style={styles.container}>
       <View style={styles.selectedDeviceInfo}>
         <Text style={styles.selectableDevices}>Select a device to trade:</Text>
-        {(devicesWithImage && selectedUserDevice) && (
         <View  style={styles.selectedDevice}>
-          {devicesWithImage.map(device => {
-            return (
-              <TouchableOpacity
-              style={styles.selectableDevice}
-              key={device.id}
-              onPress={() => { setSelectedUserDevice(device) }}
-              style={(selectedUserDevice.id === device.id) ? styles.highlighted : styles.unhighlighted}
-              >
-                <Avatar.Image size={100} source={{uri: device.thumbnail_url}} />
-              </TouchableOpacity>
-            )
-          })}
+          {deviceMap}
         </View>
-        )}
       </View>
       <View style={styles.proposalInfo}>
         <Text style={styles.headerText}>Proposal:</Text>
         <View style={styles.theSwap}>
           <View style={[{ aspectRatio: 1 }], [styles.imgBox, styles.imgBoxLeft]}>
             <View style={styles.yourPic}>
-              {yourImage && (
-                <Avatar.Image size={45} source={{ uri: yourImage}} />
-              )}
+              <Avatar.Image size={45} source={{ url: userData.thumbnail_url}} />
             </View>
-            {(devicesWithImage && selectedUserDevice) && (
-              // <View><Text>x</Text></View>
-              <Image resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} source={{uri: selectedUserDevice.thumbnail_url}}/>
-            )}
+            <Image resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} source={{url: selectedDeviceURL}}/>
           </View>
           <View style={styles.swapIcon}>
             <Ionicons name='swap-horizontal-outline' size={35} />
           </View>
           <View style={[{ aspectRatio: 1 }], [styles.imgBox, styles.imgBoxRight]}>
             <View style={styles.theirPic}>
-              <Avatar.Image size={45} source={{uri: theirImage}}/>
+              <Avatar.Image size={45} source={{url: route.params.sellerData.thumbnail_url}}/>
             </View>
             <Image resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} source={{url: itemInfo.thumbnail_url}}/>
           </View>

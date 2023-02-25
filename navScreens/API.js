@@ -7,6 +7,7 @@ import { MY_IP, PORT } from '@env'
   const port = process.env.PORT;
   const url = `http://${localIP}:${port}${endpoint}`;
 
+
   return new Promise((resolve, reject) => {
     axios({method, url, data })
     .then(res => {
@@ -118,6 +119,17 @@ export function getUserFromEmail(userEmail) {
     })
   })//end Promise
 }
+export function getUserFromId(userId) {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/users/user?userId=${userId}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
 
 export function updateOwners(userA, itemA, userB, itemB) {
   return new Promise((resolve,reject) => {
@@ -141,9 +153,46 @@ export function getTradeFromID(tradeID) {
     })
   })//end Promise
 }
+export function getBookmarksFromUserId(userId) {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/bookmarks/${userId}`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
 export function getAllUsers() {
   return new Promise((resolve,reject) => {
     axiosCall('get', `/users/all`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
+
+// export function getUserFromID(userID) {
+//   console.log(userID);
+//   return new Promise((resolve,reject) => {
+//     axiosCall('get', `/users/userInfo?id=${userID}`)
+//     .then(res => {
+//       resolve(res);
+//     })
+//     .catch(err => {
+//       reject(err);
+//     })
+//   })//end Promise
+// }
+
+export function addBookmark(bookmarkObj) {
+console.log(bookmarkObj)
+  return new Promise((resolve,reject) => {
+    axiosCall('post', `/bookmark`, bookmarkObj)
     .then(res => {
       resolve(res);
     })
@@ -173,3 +222,14 @@ export function updateTradeFromID(tradeID, currentTradeStatus, isTerminate) {
   })//end Promise
 }
 
+export function getAllDevices() {
+  return new Promise((resolve,reject) => {
+    axiosCall('get', `/devices`)
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })//end Promise
+}
