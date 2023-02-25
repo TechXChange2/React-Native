@@ -44,11 +44,19 @@ export default {
 
   },
   getItemImage: async (itemData) => {
-    if (itemData.thumbnail_url.indexOf('http') !== -1) {
-      return itemData.thumbnail_url;
-    } else {
-      let itemImage = await downloadImage(itemData.thumbnail_url);
-      return itemImage;
+    if(itemData) {
+      if(itemData.imageUri) {
+        let image = await downloadImage(itemData.imageUri);
+        return image;
+      } else if (itemData.thumbnail_url) {
+        // console.log('itemData for tURL:', itemData);
+        if (itemData.thumbnail_url.indexOf('http') !== -1) {
+          return itemData.thumbnail_url;
+        } else {
+          let itemImage = await downloadImage(itemData.thumbnail_url);
+          return itemImage;
+        }
+      }
     }
   }
 

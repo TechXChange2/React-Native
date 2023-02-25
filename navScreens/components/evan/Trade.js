@@ -5,26 +5,57 @@ import React from 'react'
 import * as API from '../../API.js';
 import { Context } from '../../../globals/context.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import s3 from '../../../globals/s3Utils.js';
 
 
 const Trade = ({yourData, i, type, trade}) => {
-  const {nav, userData} = React.useContext(Context);
+  const {nav, userData, isReady, setIsReady} = React.useContext(Context);
   const screenWidth = useWindowDimensions().width;
   const [thisTrade, setThisTrade] = React.useState({});
   const [theirData, setTheirData] = React.useState({});
   const [yourItem, setYourItem] = React.useState({});
   const [theirItem, setTheirItem] = React.useState({});
 
+  const [yourImage, setYourImage] = React.useState();
+  const [theirImage, setTheirImage] = React.useState();
+  const [yourItemImage, setYourItemImage] = React.useState();
+  const [theirItemImage, setTheirItemImage] = React.useState();
+
   const [btnDisabled, setBtnDisabled] = React.useState();
   const [btnContent, setBtnContent] = React.useState('');
   const [isTerminated, setIsTerminated] = React.useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
 
-  // React.useEffect(() => { //start animation
-  //   setTimeout(() => {
-  //     setIsMounted(true);
-  //   }, (70 * (2*i)));
-  // }, []);
+  //set your image
+  React.useEffect(() => { //start animation
+    if(yourData) {
+    s3.getProfilePic(yourData)
+    .then(res => setYourImage(res))
+    .catch(err => console.error(err))
+    }
+  }, []);
+  React.useEffect(() => { //start animation
+    if(theirData) {
+      s3.getProfilePic(theirData)
+      .then(res => setTheirImage(res))
+      .catch(err => console.error(err))
+    }
+  }, [theirData]);
+  React.useEffect(() => { //start animation
+    if(yourItem) {
+      s3.getItemImage(yourItem)
+      .then(res => setYourItemImage(res))
+      .catch(err => console.error(err))
+    }
+  }, [yourItem]);
+  React.useEffect(() => { //start animation
+    if(theirItem) {
+      s3.getItemImage(theirItem)
+      .then(res => setTheirItemImage(res))
+      .catch(err => console.error(err))
+    }
+  }, [theirItem]);
+
 
   React.useEffect(() => { //set btnContent
     if(['Pend','Comp','Term', 'You ', 'Sorr'].includes(btnContent.slice(0,4))) {
@@ -61,6 +92,9 @@ const Trade = ({yourData, i, type, trade}) => {
 
 
   const updateTradeStatus = () => {
+    let readyObj = isReady;
+    readyObj.trades = true;
+    setIsReady(readyObj);
     //get your Item
     Promise.all([
       API.getItemFromID(yourItem.id),
@@ -99,7 +133,7 @@ const Trade = ({yourData, i, type, trade}) => {
               if(res.data[0].status === 'completed') {
                 API.updateOwners(yourData.id, yourItem.id, theirData.id, theirItem.id)
                 .then(res => {
-                  console.log('updated owners?', res);
+                  console.log('updated owners?');
                 })
                 .catch(err => {
                   console.error('error in updating owners..', err);
@@ -165,10 +199,10 @@ const rerouteToItem = (item) => {
       <View style={styles.theSwap}>
         <View style={[{ aspectRatio: 1 }], [styles.imgBox, styles.imgBoxLeft]}>
           <View style={styles.yourPic}>
-            <Avatar.Image size={45} source={{ url: yourData.thumbnail_url}} />
+            <Avatar.Image size={45} source={{ uri: yourImage}} />
           </View>
           <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: yourItem.id})}>
-            <Image source={{uri: yourItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
+            <Image source={{uri: yourItemImage}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
           </TouchableOpacity>
         </View>
         <View style={styles.swapIcon}>
@@ -179,7 +213,7 @@ const rerouteToItem = (item) => {
             <Avatar.Image size={45} source={{ url: theirData.thumbnail_url}} />
           </View>
           <TouchableOpacity onPress={() => nav.navigate('ItemDetails', {itemID: theirItem.id})}>
-            <Image source={{uri: theirItem.thumbnail_url}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
+            <Image source={{uri: theirItemImage}} resizeMode="cover" style={[{ aspectRatio: 1}, styles.img]} />
           </TouchableOpacity>
         </View>
         {/* <Button icon="account-switch" buttonColor='#007AFF' mode="contained" onPress={() => console.log('Pressed')}>
