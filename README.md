@@ -5,8 +5,8 @@ A React-Native mobile app designed to facilitate Electronic Device Trading.
 
 [Evan O'Shea](https://github.com/evanoshea21) \
 [Aristotle Jalalianfard](https://github.com/n0kam1)\
-[Erin Antoine](https://github.com/)\
-[Kyle Robers](https://github.com/)
+[Erin Antoine](https://github.com/erinantoine1)\
+[Kyle Robers](https://github.com/kylrober)
 
 ## Built With
 
@@ -65,7 +65,7 @@ const [isReady, setIsReady] = useState({
 - Items that are already bookmarked by you displays a disabled grey button
 
 ## Propose Trade Screen
-Author: [Erin Antoine](https://github.com/)
+Author: [Erin Antoine](https://github.com/erinantoine1)
 
 <img src="./assets/proposeForm.gif" height="600">
 
@@ -102,7 +102,7 @@ Author: [Aristotle Jalalianfard](https://github.com/n0kam1)
 - notes
 
 ## Add Items Screen
-Author: [Kyle Robers](https://github.com/)
+Author: [Kyle Robers](https://github.com/kylrober)
 
 <img src="./assets/addItem.gif" height="600">
 
