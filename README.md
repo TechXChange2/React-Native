@@ -25,10 +25,6 @@ A React-Native mobile app designed to facilitate Electronic Device Trading.
 <img src="./assets/overview2.gif" height="600">
 </p>
 
-|                    Login                     |                    Register                     |
-| :------------------------------------------------: | :-----------------------------------------------: |
-| <img src="./assets/login.gif" height="400"> | <img src="./assets/register.gif" height="400"> |
-
 
 ## Home Screen
 Author: [Evan O'Shea](https://github.com/evanoshea21)
@@ -123,6 +119,11 @@ Author: [Kyle Robers](https://github.com/)
 - notes
 - notes
 -------------------------------------------
+
+
+|                    Login                     |                    Register                     |
+| :------------------------------------------------: | :-----------------------------------------------: |
+| <img src="./assets/login.gif" height="400"> | <img src="./assets/register.gif" height="400"> |
 
 ## Getting Started
 
