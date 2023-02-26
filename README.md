@@ -21,15 +21,19 @@ A React-Native mobile app designed to facilitate Electronic Device Trading.
 - Google Places API used to autocomplete user input (for Address) while registering
 - AWS Amplify & S3 integrated to work with Expo-client ImagePicker component, so user can upload/take an image from their phone
 
-![fec-overview-readme](./client/dist/images/OLight.png)
+<p align="center">
+<img src="./assets/overview2.gif" height="600">
+</p>
 
-|                    Col1                     |                    Col2                     |
+|                    Login                     |                    Register                     |
 | :------------------------------------------------: | :-----------------------------------------------: |
-| ![fec-qa-readme](./client/dist/images/OLight.png) | ![fec-qa-readme](./client/dist/images/Odark.png) |
+| <img src="./assets/login.gif" height="400"> | <img src="./assets/register.gif" height="400"> |
 
 
 ## Home Screen
 Author: [Evan O'Shea](https://github.com/evanoshea21)
+
+<img src="./assets/homescreen5.gif" height="600">
 
 #### Optimization Feature
 Global Context `isReady` was made to keep track of when user updates one of 3 lists (Items, Trades, Bookmarks). \
@@ -67,6 +71,8 @@ const [isReady, setIsReady] = useState({
 ## Propose Trade Screen
 Author: [Erin Antoine](https://github.com/)
 
+<img src="./assets/proposeForm.gif" height="600">
+
 #### Highlighted Features
 - fill in
 
@@ -84,6 +90,8 @@ Author: [Erin Antoine](https://github.com/)
 ## Search Items Screen
 Author: [Aristotle Jalalianfard](https://github.com/n0kam1)
 
+<img src="./assets/search.gif" height="600">
+
 #### Highlighted Features
 - fill in
 
@@ -99,6 +107,8 @@ Author: [Aristotle Jalalianfard](https://github.com/n0kam1)
 
 ## Add Items Screen
 Author: [Kyle Robers](https://github.com/)
+
+<img src="./assets/addItem.gif" height="600">
 
 #### Highlighted Features
 - fill in
