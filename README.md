@@ -54,7 +54,7 @@ const [isReady, setIsReady] = useState({
 
 #### Your Pending Trades (proposed & offered):
 
-- 3 stage process for Devices being traded. Status is either Proposed, Approved, or Completed. This allows a proposer to Accept the trade, hence Confirming it once the recipient of the trade proposition Approves it.
+- 3-stage trading process. Status is either *Proposed*, *Approved*, or *Completed*. This allows a proposer to Accept the trade, hence Confirming it once the recipient of the trade proposition Approves it.
 - Global Context only pulls from trades if trade is proposed by user or refresh button is clicked
 - Toggle Button allows user to change views, between trades they *Proposed* and trades they are *Offered*
 
