@@ -119,11 +119,11 @@ Author: [Kyle Robers](https://github.com/)
 - notes
 - notes
 -------------------------------------------
+### More Demo Clips
 
-
-|                    Login                     |                    Register                     |
-| :------------------------------------------------: | :-----------------------------------------------: |
-| <img src="./assets/login.gif" height="400"> | <img src="./assets/register.gif" height="400"> |
+|         Login              |               Register (with Google Places Address AutoComplete)                    |        Trade Process   |
+| :---------------------------------: | :----------------------------: | :-----------------------------------: |
+| <img src="./assets/login.gif" height="400"> | <img src="./assets/register.gif" height="400"> | <img src="./assets/trade.gif" height="400">           |
 
 ## Getting Started
 
