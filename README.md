@@ -33,7 +33,7 @@ Author: [Evan O'Shea](https://github.com/evanoshea21)
 
 #### Optimization Feature
 Global Context `isReady` was made to keep track of when user updates one of 3 lists (Items, Trades, Bookmarks). \
-This limits when AJAX requests are made to only occur when updates are detected \
+This limits when AJAX requests are made to only occur when inputs from the user are detected. \
 Object:
 ```js
 const [isReady, setIsReady] = useState({
