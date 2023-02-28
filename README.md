@@ -64,24 +64,42 @@ const [isReady, setIsReady] = useState({
 - Items that are **Yours** cannot be bookmarked (bookmark button doesn't display)
 - Items that are already bookmarked by you displays a disabled grey button
 
-## Propose Trade Screen
+## Item Details Screen/Propose Trade Screen
 Author: [Erin Antoine](https://github.com/erinantoine1)
 
 <img src="./assets/proposeForm.gif" height="600">
 
 #### Highlighted Features
-- fill in
 
-##### Subheading: (if you want to talk about a feature of the page/your work)
+- View item details/current owner information
+- Ability to bookmark items for later viewing/trading
+- React Native's Stack and Tab navigators implemented to manage user navigation
+- Ability to propose a trade from your devices (items that have been previously added to the account via "Add Items" screen)
 
-- notes
-- notes
+##### View Item Details/Current Owner Information:
 
-##### Subheading2: (another feature of page)
+- All information about a device is presented upon navigation to the Item Details screen (item name, description, condition) along with a clear image of the item available for trade
+- Information about the current owner is also available upon navigation to the Item Details screen (name, location, short owner tagline) along with an avatar of the user (if they uploaded to their account)
 
-- notes
-- notes
+##### Bookmark Item:
 
+- Items will be added to bookmarks table of database, which can later be accessed via the Home screen
+- Items that are Yours cannot be bookmarked (bookmark button doesn't display)
+- Items that are already bookmarked by you displays a disabled grey button
+
+##### Navigation:
+
+- From the Item Details screen, one can navigate to the previous page (where item image was originally clicked-Home or Search screens) by clicking "Back"
+- Users may navigate to the Propose Trade screen via the button at the bottom of the Item Details screen (unless it is the user's item)
+- From the Propose Trade screen, one can navigate to the previous page by clicking "Item Details", and any changes to the propose trade form will not be saved
+
+##### Propose a Trade:
+
+- Users will select from their devices to trade (represented by round avatars in the first section of the screen)
+- On press, your selected device will be highlighted in blue
+- You can preview the trade before submission in the second section of the screen (images of both devices will be displayed)
+- Submit your proposal by clicking on the "Propose Trade" button at the bottom of the screen
+- View trade progress via the Home screen
 
 ## Search Items Screen
 Author: [Aristotle Jalalianfard](https://github.com/n0kam1)
